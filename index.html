@@ -357,4 +357,258 @@ async function ask(c){
   w.innerHTML=`<div class="prose">${ring(true)}</div>`;box.appendChild(w);const b=w.firstChild;scrollDown();
   const body={model:M(model).real,stream:true,temperature:Number(cfg.temp),
     messages:[{role:"system",content:CONFIG.IDENTITY+(cfg.sys?"\n"+cfg.sys:"")},...c.msgs.filter(m=>!m.err).map(m=>({role:m.role,content:apiText(m)}))]};
-  ctrl=new AbortController();let full="
+  ctrl=new AbortController();let full="";
+  try{
+    const r=await fetch(CONFIG.BASE_URL+"/chat/completions",{method:"POST",signal:ctrl.signal,
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+(cfg.key||CONFIG.API_KEY)},body:JSON.stringify(body)});
+    if(!r.ok)throw{status:r.status};
+    const rd=r.body.getReader(),dec=new TextDecoder();let buf="";
+    while(true){
+      const{done,value}=await rd.read();if(done)break;
+      buf+=dec.decode(value,{stream:true});const lines=buf.split("\n");buf=lines.pop();
+      for(const ln of lines){
+        const s=ln.trim();if(!s.startsWith("data:"))continue;const d=s.slice(5).trim();if(d==="[DONE]")continue;
+        try{const j=JSON.parse(d),t=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;
+          if(t){full+=t;if(!raf)raf=requestAnimationFrame(()=>{raf=0;b.innerHTML=md(full);scrollDown()})}}catch(e){}
+      }
+    }
+    if(!full)throw{status:0,empty:true};
+    c.msgs.push({role:"assistant",content:full});
+  }catch(e){
+    if(e&&e.name==="AbortError"){if(full)c.msgs.push({role:"assistant",content:full})}
+    else c.msgs.push({role:"assistant",err:true,content:e&&e.status!==undefined?(e.empty?"Xozen tidak mengirim jawaban. Coba lagi.":friendlyErr(e.status)):"Gagal terhubung. Periksa koneksi internet kamu."});
+  }
+  busy=false;ctrl=null;c.t=Date.now();save();renderSide();renderMain();renderComp();
+}
+function stop(){if(ctrl)ctrl.abort()}
+function regen(){
+  const c=getChat();if(!c||busy)return;
+  while(c.msgs.length&&c.msgs[c.msgs.length-1].role==="assistant")c.msgs.pop();
+  if(!c.msgs.length)return;save();renderMain(true);ask(c);
+}
+const flash=b=>{const o=b.innerHTML;b.innerHTML=ic("check");setTimeout(()=>b.innerHTML=o,1200)};
+const cp=(s,b)=>navigator.clipboard.writeText(s).then(()=>flash(b)).catch(()=>{});
+const chatText=c=>c.msgs.map(m=>(m.role==="user"?"Saya: ":"Xozen: ")+m.content).join("\n\n");
+function autoSize(){const i=$("#inp");i.style.height="auto";i.style.height=Math.min(i.scrollHeight,180)+"px";renderComp()}
+
+/* events */
+document.querySelectorAll("[data-i]").forEach(e=>e.innerHTML=ic(e.dataset.i));
+$("#brand").innerHTML=logo()+"Xozen";
+$("#inp").addEventListener("input",autoSize);
+$("#inp").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing&&matchMedia("(hover:hover)").matches){e.preventDefault();send()}});
+$("#send").onclick=()=>busy?stop():send();
+$("#newChat").onclick=newChat;$("#hNew").onclick=newChat;
+$("#hb").onclick=()=>{$("#side").classList.add("open");$("#scrim").classList.add("on")};
+$("#sClose").onclick=closeSide;$("#scrim").onclick=closeSide;
+$("#sSearchBtn").onclick=()=>{$("#sq").classList.toggle("on");if($("#sq").classList.contains("on"))$("#q").focus();else{$("#q").value="";renderSide()}};
+$("#q").addEventListener("input",renderSide);
+$("#hShare").onclick=e=>{const c=getChat();if(c)cp(chatText(c),e.currentTarget)};
+$("#chat").addEventListener("scroll",()=>{const c=$("#chat");stick=c.scrollHeight-c.scrollTop-c.clientHeight<80});
+$("#chip").onclick=e=>{e.stopPropagation();$("#menu").classList.remove("on");$("#mpop").classList.toggle("on")};
+$("#mpop").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;model=b.dataset.m;store.set("xz_model",model);renderComp()};
+document.addEventListener("click",()=>{$("#menu").classList.remove("on");$("#mpop").classList.remove("on")});
+$("#list").onclick=e=>{
+  const it=e.target.closest(".item");if(!it)return;const id=it.dataset.id;
+  if(e.target.closest(".more")){
+    e.stopPropagation();menuId=id;const r=e.target.closest(".more").getBoundingClientRect(),m=$("#menu");
+    m.innerHTML=`<button data-x="ren">${ic("edit")}Ganti nama</button><button data-x="del" class="red">${ic("x")}Hapus</button>`;
+    m.style.top=Math.min(r.bottom+4,innerHeight-120)+"px";m.style.left=Math.max(8,r.right-170)+"px";m.classList.add("on");return;
+  }
+  if(busy)stop();cur=id;save();renderAll();closeSide();
+};
+$("#menu").onclick=e=>{
+  const b=e.target.closest("[data-x]");if(!b)return;const c=chats.find(x=>x.id===menuId);if(!c)return;
+  if(b.dataset.x==="ren"){const n=prompt("Nama obrolan",c.title);if(n&&n.trim())c.title=n.trim().slice(0,60)}
+  else if(confirm("Hapus obrolan ini?")){chats=chats.filter(x=>x!==c);if(cur===c.id)cur=chats.length?chats[chats.length-1].id:null}
+  save();renderAll();
+};
+$("#msgs").addEventListener("click",e=>{
+  const t=e.target.closest("button")||e.target;
+  if(t.dataset.run!==undefined){openRun(t.closest(".codebox").querySelector("pre").textContent);return}
+  if(t.dataset.copy!==undefined){const l=t.querySelector("span"),o=l.textContent;navigator.clipboard.writeText(t.closest(".codebox").querySelector("pre").textContent).then(()=>{l.textContent="Tersalin";setTimeout(()=>l.textContent=o,1200)}).catch(()=>{});return}
+  if(t.dataset.dl!==undefined){const bx=t.closest(".codebox"),lg=(bx.querySelector(".codehead span").textContent||"txt").toLowerCase(),map={kode:"txt",text:"txt",javascript:"js",typescript:"ts",python:"py",markdown:"md",shell:"sh",bash:"sh",html:"html",htm:"html"},ex=(map[lg]||lg).replace(/[^a-z0-9]/g,"")||"txt",a=document.createElement("a");a.href=URL.createObjectURL(new Blob([bx.querySelector("pre").textContent],{type:"text/plain"}));a.download="kode."+ex;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);return}
+  const b=t.closest("[data-a]");if(!b)return;
+  const a=b.dataset.a,c=getChat(),m=c.msgs[+b.closest(".msg").dataset.i];
+  if(a==="copy")cp(m.content,b);
+  if(a==="regen")regen();
+  if(a==="share")cp(chatText(c),b);
+  if(a==="speak"){if(speechSynthesis.speaking){speechSynthesis.cancel();return}const u=new SpeechSynthesisUtterance(m.content);u.lang="id-ID";speechSynthesis.speak(u)}
+  if(a==="up"||a==="down"){const v=a==="up"?1:-1;m.fb=m.fb===v?0:v;save();b.parentNode.querySelectorAll("[data-a=up],[data-a=down]").forEach(x=>x.classList.toggle("on",(x.dataset.a==="up"?1:-1)===m.fb))}
+  if(a==="edit"&&!busy){const i=+b.closest(".msg").dataset.i;$("#inp").value=m.content;c.msgs=c.msgs.slice(0,i);save();renderMain(true);autoSize();$("#inp").focus()}
+  if(a==="retry"&&!busy){c.msgs.pop();save();renderMain(true);ask(c)}
+});
+
+/* file sementara */
+const OK=/\.(txt|md|markdown|csv|tsv|json|xml|ya?ml|log|ini|toml|html?|css|jsx?|tsx?|py|java|c|h|cpp|cs|go|rs|php|rb|sh|sql|kt|swift|lua)$/i;
+const kb=s=>s<1024?s+" B":(s/1024).toFixed(1)+" KB";
+function note(m){tnote=m;renderTray();clearTimeout(tn);tn=setTimeout(()=>{tnote="";renderTray()},3500)}
+function renderTray(){const t=$("#tray");t.innerHTML=tmp.map((f,i)=>`<span class="fc"><span class="fn">${esc(f.name)}</span><span class="fs">${kb(f.size)}</span><button data-rm="${i}" aria-label="Hapus ${esc(f.name)}">${ic("x")}</button></span>`).join("")+(tnote?`<span class="fnote">${esc(tnote)}</span>`:"");t.style.display=tmp.length||tnote?"flex":"none"}
+async function addFiles(fl){
+  for(const f of fl){
+    if(tmp.length>=5){note("Maksimal 5 file");break}
+    if(!OK.test(f.name)&&!/^text\//.test(f.type)){note(f.name+": jenis file belum didukung");continue}
+    if(f.size>102400){note(f.name+": lebih dari 100 KB");continue}
+    if(tmp.reduce((a,x)=>a+x.size,0)+f.size>307200){note("Total lampiran melebihi 300 KB");continue}
+    let text;try{text=await f.text()}catch(e){note("Gagal membaca "+f.name);continue}
+    if(text.includes("\u0000")){note(f.name+": bukan file teks");continue}
+    tmp.push({name:f.name,size:f.size,text});
+  }
+  renderTray();renderComp();
+}
+function apiText(m){
+  if(!m.files||!m.files.length)return m.content;
+  const have=m._f||[],parts=have.map(f=>`[File: ${f.name}]\n\`\`\`\n${f.text}\n\`\`\``),
+    miss=m.files.filter(f=>!have.some(x=>x.name===f.name)).map(f=>`[File ${f.name} sudah tidak tersedia]`);
+  return (m.content?m.content+"\n\n":"Berikut file yang saya kirim:\n\n")+parts.concat(miss).join("\n\n");
+}
+$("#attach").onclick=()=>$("#fi").click();
+$("#fi").onchange=e=>{addFiles([...e.target.files]);e.target.value=""};
+$("#tray").onclick=e=>{const b=e.target.closest("[data-rm]");if(b){tmp.splice(+b.dataset.rm,1);renderTray();renderComp()}};
+$("#finfo").onclick=()=>$("#imodal").classList.add("on");
+$("#ix").onclick=()=>$("#imodal").classList.remove("on");
+$("#imodal").onclick=e=>{if(e.target.id==="imodal")$("#imodal").classList.remove("on")};
+const bx=document.querySelector(".box");
+bx.addEventListener("dragover",e=>{e.preventDefault();bx.classList.add("drag")});
+bx.addEventListener("dragleave",()=>bx.classList.remove("drag"));
+bx.addEventListener("drop",e=>{e.preventDefault();bx.classList.remove("drag");addFiles([...e.dataTransfer.files])});
+
+/* jalankan html */
+function openRun(code){const m=code.match(/<title>([^<]*)<\/title>/i);$("#rt").textContent=(m&&m[1].trim())||"Pratinjau HTML";$("#rf").srcdoc=code;$("#run").dataset.code=code;$("#run").classList.add("on")}
+function closeRun(){$("#run").classList.remove("on");$("#rf").srcdoc=""}
+$("#rx").onclick=closeRun;
+$("#rTab").onclick=()=>window.open(URL.createObjectURL(new Blob([$("#run").dataset.code],{type:"text/html"})),"_blank");
+$("#run").onclick=e=>{if(e.target.id==="run")closeRun()};
+
+/* pengaturan */
+const TABS=[["umum","Umum","gear"],["profil","Profil","user"],["data","Data","db"],["tentang","Tentang","info"]];
+function renderTab(){
+  $("#tabs").innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]===tab?"on":""}">${ic(t[2])}${t[1]}</button>`).join("");
+  const b=$("#pbody");
+  if(tab==="umum")b.innerHTML=`<div class="lbl">Tema</div><div class="themes">`+[["light","Terang","sun"],["dark","Gelap","moon"],["auto","Sistem","mon"]].map(t=>`<button data-th="${t[0]}" class="${theme===t[0]?"on":""}">${ic(t[2])}${t[1]}</button>`).join("")+
+    `</div><div class="lbl">Instruksi tambahan untuk Xozen</div><textarea id="sSys" placeholder="Contoh: Jawab singkat dalam bahasa Indonesia.">${esc(cfg.sys)}</textarea><button class="pill" data-d="preset" style="margin-top:8px">Pakai preset File Generator</button><div class="lbl">Gaya jawaban</div><input type="range" id="sTemp" min="0" max="2" step="0.1" value="${cfg.temp}"><div class="rng"><span>Presisi</span><span>Kreatif</span></div><div class="lbl">API key</div><input type="password" id="sKey" placeholder="Kosongkan untuk pakai bawaan file" value="${esc(cfg.key)}">`;
+  if(tab==="profil")b.innerHTML=`<div class="lbl">Nama</div><input type="text" id="sName" value="${esc(cfg.name)}" maxlength="30"><p class="mute" style="margin-top:14px">Obrolan tersimpan di browser perangkat ini saja.</p><div class="row2"><span>Akun: <b>${esc(SES&&SES.u||"")}</b></span><button class="pill red" data-d="logout">Keluar</button></div>${SES&&SES.adm?'<div class="lbl">Pengguna terdaftar</div><div id="ulist" class="mute">Memuat…</div>':""}`;if(tab==="profil"&&SES&&SES.adm)loadUsers();
+  if(tab==="data")b.innerHTML=`<div class="row2"><span>Ekspor data</span><button class="pill" data-d="export">Ekspor</button></div><div class="row2"><span>Hapus semua obrolan</span><button class="pill red" data-d="wipe">Hapus semua</button></div>`;
+  if(tab==="tentang")b.innerHTML=`<div class="row2"><span>Xozen</span><span class="mute">Asisten AI</span></div><p class="mute" style="margin-top:14px">Dihasilkan AI, hanya untuk referensi.</p>`;
+}
+function openSet(t){tab=t||"umum";renderTab();$("#modal").classList.add("on");closeSide()}
+$("#prof").onclick=()=>openSet("profil");
+$("#mx").onclick=()=>$("#modal").classList.remove("on");
+$("#modal").onclick=e=>{if(e.target.id==="modal")$("#modal").classList.remove("on")};
+$("#tabs").onclick=e=>{const b=e.target.closest("[data-t]");if(b){tab=b.dataset.t;renderTab()}};
+$("#pbody").addEventListener("click",async e=>{
+  const th=e.target.closest("[data-th]"),d=e.target.closest("[data-d]"),ua=e.target.closest("[data-act]");
+  if(d&&d.dataset.d==="logout")return out();
+  if(ua){const a=ua.dataset.act,n=ua.dataset.u;if(a==="del"&&!confirm("Hapus akun "+n+"?"))return;await API("/admin/users/"+encodeURIComponent(n)+(a==="del"?"":"/"+a),a==="del"?null:{},a==="del"?"DELETE":"POST");return loadUsers()}
+  if(th){theme=th.dataset.th;store.set("xz_theme",theme);applyTheme();renderTab()}
+  if(d&&d.dataset.d==="preset"){cfg.sys=PRESET;store.set("xz_cfg",cfg);renderTab()}
+  if(d&&d.dataset.d==="export"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(chats,null,2)],{type:"application/json"}));a.download="xozen-obrolan.json";a.click()}
+  if(d&&d.dataset.d==="wipe"&&confirm("Hapus semua obrolan? Tindakan ini tidak bisa dibatalkan.")){chats=[];cur=null;save();renderAll();$("#modal").classList.remove("on")}
+});
+$("#pbody").addEventListener("input",e=>{
+  const i=e.target.id;
+  if(i==="sSys")cfg.sys=e.target.value;if(i==="sTemp")cfg.temp=+e.target.value;if(i==="sKey")cfg.key=e.target.value.trim();
+  if(i==="sName"){cfg.name=e.target.value;renderSide()}
+  store.set("xz_cfg",cfg);
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeRun();$("#imodal").classList.remove("on");$("#modal").classList.remove("on");$("#menu").classList.remove("on");$("#mpop").classList.remove("on");closeSide()}});
+
+if(!getChat()&&chats.length)cur=chats[chats.length-1].id;
+applyTheme();renderAll();
+/* ================= AUTH ================= */
+const WA_DEV="https://wa.me/6289523042979",SESS_MS=48*36e5;
+const EYE='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const tk=()=>{try{return JSON.parse(localStorage.getItem("xz_ses")).t}catch(e){return""}};
+async function API(path,body,m){
+  try{const r=await fetch(CONFIG.AUTH_BASE+path,{method:m||(body?"POST":"GET"),headers:{"Content-Type":"application/json",Authorization:"Bearer "+tk()},body:body?JSON.stringify(body):undefined});
+    let j={};try{j=await r.json()}catch(e){}return{s:r.status,...(Array.isArray(j)?{list:j}:j)}}
+  catch(e){return{s:0,error:"Tidak bisa terhubung ke server."}}}
+const setSes=r=>{try{localStorage.setItem("xz_ses",JSON.stringify({t:r.token,u:r.user,adm:!!r.admin,at:Date.now()}))}catch(e){}};
+const SM=()=>{try{const m=sessionStorage.xz_msg;sessionStorage.removeItem("xz_msg");return m||""}catch(e){return""}};
+const enter=r=>{setSes(r);if(!tk()){const bb=$("#go");if(bb)bb.disabled=false;return am("Penyimpanan browser diblokir. Izinkan cookie/penyimpanan situs untuk Xozen, lalu coba lagi.")}location.reload()};
+function out(msg){try{localStorage.removeItem("xz_ses");if(msg)sessionStorage.xz_msg=msg}catch(e){}location.reload()}
+async function ping(){const r=await API("/api/auth/me");if(r.token)setSes(r);else if(r.s===401||r.s===403)out(r.suspended?"Akun ditangguhkan admin. Masuk lagi untuk verifikasi.":"Sesi berakhir, silakan masuk lagi.")}
+async function loadUsers(){const r=await API("/admin/users"),el=$("#ulist");if(!el)return;if(!r.list)return el.textContent=r.error||"Gagal memuat.";
+  el.innerHTML=r.list.map(u=>`<div class="row2"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(u.username)}<br><span class="mute">${esc(u.wa)}${u.suspended?" · disuspend":""}</span></span><span style="display:flex;gap:6px"><button class="pill" data-u="${esc(u.username)}" data-act="${u.suspended?"unsuspend":"suspend"}">${u.suspended?"Aktifkan":"Suspend"}</button><button class="pill red" data-u="${esc(u.username)}" data-act="del">Hapus</button></span></div>`).join("")||"Belum ada pengguna."}
+
+const LEGAL={terms:["Ketentuan Penggunaan",[
+"<b>1. Persetujuan.</b> Dengan mendaftar atau masuk ke Xozen, Anda menyetujui ketentuan ini. Jika tidak setuju, mohon jangan menggunakan layanan.",
+"<b>2. Akun.</b> Anda wajib memberi username dan nomor WhatsApp yang benar. Satu nomor WhatsApp hanya untuk satu akun. Jaga kerahasiaan kata sandi; semua aktivitas di akun Anda menjadi tanggung jawab Anda.",
+"<b>3. Penggunaan yang dilarang.</b> Dilarang memakai Xozen untuk melanggar hukum, membuat atau menyebarkan malware, menipu, melecehkan, melanggar hak pihak lain, atau mencoba menembus keamanan dan membebani layanan.",
+"<b>4. Jawaban AI.</b> Jawaban dihasilkan AI, bisa keliru atau tidak lengkap, dan hanya untuk referensi. Bukan nasihat medis, hukum, atau keuangan. Periksa kembali sebelum dipakai.",
+"<b>5. Penangguhan.</b> Admin dapat menangguhkan atau menghapus akun yang melanggar ketentuan atau membahayakan layanan. Akun yang ditangguhkan harus verifikasi kode yang dikirim ke WhatsApp saat masuk berikutnya.",
+"<b>6. Sesi.</b> Sesi berakhir otomatis bila Anda tidak membuka Xozen selama 2 hari, lalu Anda perlu masuk lagi.",
+"<b>7. Tanpa jaminan.</b> Layanan disediakan apa adanya. Kami dapat mengubah atau menghentikan layanan sewaktu-waktu dan tidak bertanggung jawab atas kerugian yang timbul dari penggunaannya, sejauh diizinkan hukum.",
+"<b>8. Perubahan.</b> Ketentuan dapat diperbarui. Dengan tetap memakai layanan, Anda menyetujui versi terbaru. Pertanyaan? Hubungi Developer lewat WhatsApp."]],
+privacy:["Kebijakan Privasi",[
+"<b>1. Data akun di server.</b> Kami menyimpan username, nomor WhatsApp, kata sandi dalam bentuk hash (bukan teks asli), waktu pendaftaran, dan status akun (aktif atau ditangguhkan).",
+"<b>2. Nomor WhatsApp.</b> Hanya dipakai untuk mengirim kode verifikasi (reset kata sandi dan verifikasi akun yang ditangguhkan). Tidak untuk iklan dan tidak dijual.",
+"<b>3. Obrolan.</b> Riwayat obrolan disimpan di peramban perangkat Anda, bukan di server akun. Pesan dan file yang Anda kirim diteruskan ke server AI untuk membuat jawaban, jadi jangan mengirim data rahasia atau sensitif.",
+"<b>4. Penyimpanan lokal.</b> Kami memakai penyimpanan peramban untuk sesi masuk, tema, dan pengaturan. Tidak ada pelacak iklan.",
+"<b>5. Pihak ketiga.</b> Penyedia pengiriman WhatsApp menerima nomor tujuan dan isi kode verifikasi. Penyedia AI memproses pesan yang Anda kirim ke Xozen.",
+"<b>6. Keamanan dan penyimpanan.</b> Kata sandi di-hash dan akses admin dibatasi. Data akun disimpan selama akun ada dan dihapus saat akun dihapus. Tidak ada sistem yang sepenuhnya kebal dari risiko.",
+"<b>7. Hak Anda.</b> Anda dapat meminta perubahan atau penghapusan data akun lewat Developer di WhatsApp.",
+"<b>8. Perubahan.</b> Kebijakan ini dapat diperbarui dan berlaku sejak dipublikasikan di aplikasi."]]};
+function legal(k){$("#legal").innerHTML=`<div class="dlg"><div class="dh"><h2>${LEGAL[k][0]}</h2><button class="ib" data-x aria-label="Tutup">${ic("x")}</button></div>${LEGAL[k][1].map(t=>`<p>${t}</p>`).join("")}</div>`;$("#legal").classList.add("on")}
+$("#legal").onclick=e=>{if(e.target.id==="legal"||e.target.closest("[data-x]"))$("#legal").classList.remove("on")};
+
+let cred=null,fs=1,fg={};
+const g=id=>($("#"+id)||{}).value||"",am=(t,ok)=>{const e=$("#am");if(e){e.textContent=t||"";e.style.color=ok?"var(--acc)":""}};
+const FI=(id,ph,o={})=>`<div class="af"><input id="${id}" placeholder="${ph}" type="${o.pw?"password":"text"}" autocomplete="off"${o.n?' inputmode="numeric"':""}${o.code?' class="hc"':o.pw?' class="pw"':""}>${o.pw?`<button type="button" class="eye" data-eye="${id}" aria-label="Tampilkan kata sandi">${EYE}</button>`:""}${o.code?'<button type="button" class="sc" id="sc">Kirim kode</button>':""}</div>`;
+const TOS=t=>`<p class="am">${t}, Anda menyetujui <a data-l="terms">Ketentuan Penggunaan</a> dan <a data-l="privacy">Kebijakan Privasi</a>.</p>`;
+function showAuth(v,msg){
+  const L={
+    in:FI("a1","Username / nomor WhatsApp")+FI("a2","Kata sandi",{pw:1})+TOS("Dengan mendaftar atau masuk")+`<div class="ar"><a data-v="fg">Lupa kata sandi?</a><a data-v="up">Daftar</a></div><button class="ab" id="go">Masuk</button><div class="ao"><a href="${WA_DEV}" target="_blank" rel="noopener">Developer</a></div>`,
+    up:'<p class="am">Pendaftaran tidak memerlukan kode verifikasi. Satu nomor WhatsApp untuk satu akun.</p>'+FI("a1","Username")+FI("a3","Nomor WhatsApp (08xx)",{n:1})+FI("a2","Kata sandi",{pw:1})+FI("a4","Konfirmasi kata sandi",{pw:1})+TOS("Dengan mendaftar")+'<button class="ab" id="go">Daftar</button><div class="ar c"><a data-v="in">Masuk</a></div>',
+    fg:fs===1?'<div class="at">Reset kata sandi</div><p class="am">Masukkan username atau nomor WhatsApp, kami akan mengirim kode verifikasi ke WhatsApp untuk mengatur ulang kata sandi.</p>'+FI("a1","Username / nomor WhatsApp")+FI("a5","Kode",{code:1,n:1})+'<button class="ab" id="go">Lanjutkan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'
+      :'<div class="at">Kata sandi baru</div>'+FI("a2","Kata sandi baru",{pw:1})+FI("a4","Konfirmasi kata sandi",{pw:1})+'<button class="ab" id="go">Simpan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>',
+    sus:'<div class="at">Verifikasi akun</div><p class="am">Akun Anda ditangguhkan admin. Masukkan kode yang dikirim ke WhatsApp untuk mengaktifkannya kembali.</p>'+FI("a5","Kode",{code:1,n:1})+'<button class="ab" id="go">Verifikasi</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'};
+  $("#auth").innerHTML=`<div class="aw"><div class="ac"><div class="ab0">${logo()}<span>Xozen</span></div>${L[v]}<p class="ae" id="am">${esc(msg||SM())}</p></div></div>`;
+  $("#auth").dataset.view=v;$("#auth").classList.add("on");
+}
+function cool(b,n=60){b.disabled=true;b.textContent=n+"s";const t=setInterval(()=>{if(!b.isConnected)return clearInterval(t);if(--n<=0){clearInterval(t);b.disabled=false;b.textContent="Kirim kode"}else b.textContent=n+"s"},1e3)}
+async function sendCode(b){
+  if($("#auth").dataset.view==="sus"){b.disabled=true;const r=await API("/api/auth/login",{id:cred.id,password:cred.pw});am(r.error||"Gagal mengirim kode.",r.suspended);return cool(b)}
+  const id=g("a1").trim();if(!id)return am("Masukkan username atau nomor WhatsApp.");
+  b.disabled=true;const r=await API("/api/auth/code",{purpose:"reset",id});
+  if(r.s===200){am("Jika akun ditemukan, kode dikirim ke WhatsApp.",1);cool(b)}else{b.disabled=false;am(r.error||"Gagal mengirim kode.")}
+}
+async function submit(b){
+  const v=$("#auth").dataset.view,id=g("a1").trim(),pw=g("a2"),c=g("a5").trim(),bad=t=>{b.disabled=false;am(t)};am("");b.disabled=true;
+  if(v==="in"){
+    if(!id||!pw)return bad("Isi username/nomor dan kata sandi.");
+    const r=await API("/api/auth/login",{id,password:pw});
+    if(r.token)return enter(r);
+    if(r.suspended){cred={id,pw};showAuth("sus");return am(r.error,1)}
+    return bad(r.error||"Gagal masuk.")}
+  if(v==="up"){
+    const wa=g("a3").trim();
+    if(!id||!wa||!pw)return bad("Lengkapi semua kolom.");
+    if(pw.length<6)return bad("Kata sandi minimal 6 karakter.");
+    if(pw!==g("a4"))return bad("Konfirmasi kata sandi tidak sama.");
+    const r=await API("/api/auth/register",{username:id,wa,password:pw});
+    return r.token?enter(r):bad(r.error||"Gagal mendaftar.")}
+  if(v==="sus"){const r=await API("/api/auth/verify",{id:cred.id,code:c});return r.token?enter(r):bad(r.error||"Kode salah atau kedaluwarsa.")}
+  if(fs===1){if(!id||!c)return bad("Isi username/nomor dan kode.");fg={id,c};fs=2;return showAuth("fg")}
+  if(pw.length<6)return bad("Kata sandi minimal 6 karakter.");
+  if(pw!==g("a4"))return bad("Konfirmasi kata sandi tidak sama.");
+  const r=await API("/api/auth/reset",{id:fg.id,code:fg.c,password:pw});
+  if(r.s!==200){fs=1;showAuth("fg");return am(r.error||"Gagal mengatur ulang.")}
+  fs=1;showAuth("in");am("Kata sandi diubah. Silakan masuk.",1);
+}
+$("#auth").addEventListener("click",e=>{
+  const t=e.target,v=t.closest("[data-v]"),l=t.closest("[data-l]"),ey=t.closest("[data-eye]"),sc=t.closest("#sc"),go=t.closest("#go");
+  if(v){fs=1;return showAuth(v.dataset.v)}
+  if(l)return legal(l.dataset.l);
+  if(ey){const i=$("#"+ey.dataset.eye);return i.type=i.type==="password"?"text":"password"}
+  if(sc)return sendCode(sc);if(go)return submit(go);
+});
+$("#auth").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){const b=$("#go");if(b&&!b.disabled)b.click()}});
+try{
+if(!SES||Date.now()-SES.at>SESS_MS){try{localStorage.removeItem("xz_ses")}catch(e){}showAuth("in",SES?"Sesi berakhir, silakan masuk lagi.":"")}
+else{ping();setInterval(ping,3e5);document.addEventListener("visibilitychange",()=>{if(!document.hidden)ping()})}
+}catch(e){console.error(e);try{showAuth("in")}catch(_){}}
+{const bt=$("#boot"),go=()=>setTimeout(()=>{bt.classList.add("off");setTimeout(()=>bt.remove(),450)},Math.max(0,800-performance.now()));document.readyState==="complete"?go():addEventListener("load",go)}
+</script>
+<script>setTimeout(function(){var b=document.getElementById("boot");if(b){b.classList.add("off");setTimeout(function(){b.remove()},450)}},5000)</script>
+</body>
+</html>
