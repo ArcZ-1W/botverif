@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Masuk ke Xozen</title>
+<script>(function(){var t="auto";try{t=JSON.parse(localStorage.getItem("xz_theme"))||"auto"}catch(e){}var d=t==="dark"||(t!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.theme=d?"dark":"light"})()</script>
+<style>
+:root{--bg:#fff;--in:#f4f6fb;--line:#dfe4f0;--text:#1a1c24;--mute:#7d8397;--acc:#4d6bfe;--danger:#d93838}
+[data-theme=dark]{--bg:#16171b;--in:#1d1e23;--line:#33353e;--text:#eceef5;--mute:#8d93a6;--danger:#ff7b7b}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:var(--bg);color:var(--text);font:16px/1.5 Inter,"Segoe UI",system-ui,-apple-system,sans-serif}
+main{width:100%;max-width:340px;text-align:center}
+.brand{font-size:36px;font-weight:800;letter-spacing:-.03em;color:var(--acc);margin-bottom:36px}
+h1{font-size:19px;font-weight:600;margin-bottom:6px}
+.s{color:var(--mute);font-size:14.5px;line-height:1.45;margin-bottom:18px}
+#msg{min-height:22px;margin-bottom:10px;font-size:14px;color:var(--danger)}
+#msg.ok{color:var(--acc)}
+form{display:flex;flex-direction:column;gap:14px}
+.f{position:relative}
+input{width:100%;height:50px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:var(--in);color:var(--text);font:inherit;outline:0}
+input::placeholder{color:var(--mute)}
+input:focus{border-color:var(--acc)}
+.f input{padding-right:52px}
+.f .in-btn{position:absolute;right:0;top:0;bottom:0;padding:0 20px 0 16px}
+.eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;color:var(--mute)}
+button,a.b{font:inherit;cursor:pointer;background:none;border:0;color:inherit}
+.in-btn{color:var(--acc);white-space:nowrap}.in-btn:disabled{color:var(--mute);cursor:default}
+.in-btn::before{content:"";position:absolute;left:0;top:14px;bottom:14px;border-left:1px solid var(--line)}
+.p{height:50px;border-radius:999px;background:var(--acc);color:#fff;font-weight:500}
+.p:disabled{opacity:.6;cursor:default}
+.l{color:var(--acc);font-size:15px}.r{align-self:flex-end;margin:-4px 8px 0 0;font-size:14px}
+.t{color:var(--mute);font-size:13px}
+.or{display:flex;align-items:center;gap:12px;color:var(--mute);font-size:13px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.alt{display:flex;flex-direction:column;gap:10px}
+a.b{display:flex;align-items:center;justify-content:center;height:50px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--text)}
+a.b:hover{background:var(--in)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">Xozen</div>
+  <h1 id="h"></h1>
+  <p class="s" id="s"></p>
+  <p id="msg" role="alert"></p>
+
+  <form id="login" data-h="Masuk ke Xozen|Gunakan username atau nomor WhatsApp-mu.">
+    <input name="id" placeholder="Username atau nomor WhatsApp" autocomplete="username" required>
+    <div class="f"><input name="password" type="password" placeholder="Kata sandi" autocomplete="current-password" required><button type="button" class="eye"></button></div>
+    <button type="button" class="l r" data-go="reset">Lupa kata sandi?</button>
+    <button class="p">Masuk</button>
+    <div class="or">atau</div>
+    <div class="alt">
+      <a class="b" href="https://wa.me/628952304979?text=Halo%20Owner%2C%20saya%20butuh%20bantuan%20Xozen" target="_blank" rel="noopener">Owner</a>
+      <a class="b" href="https://wa.me/628952304979?text=Halo%20Developer%2C%20saya%20butuh%20bantuan%20Xozen" target="_blank" rel="noopener">Developer</a>
+    </div>
+    <button type="button" class="l" data-go="register">Belum punya akun? Daftar</button>
+  </form>
+
+  <form id="register" hidden data-h="Daftar akun|Pendaftaran wajib memakai nomor WhatsApp aktif. Kode verifikasi dikirim lewat WhatsApp.">
+    <input name="username" placeholder="Username" autocomplete="username" pattern="[A-Za-z][A-Za-z0-9_.]{2,19}" title="3-20 karakter, diawali huruf (huruf, angka, _ dan .)" required>
+    <input name="wa" type="tel" placeholder="Nomor WhatsApp (08xx / 628xx)" autocomplete="tel" required>
+    <div class="f"><input name="password" type="password" placeholder="Kata sandi (min. 6 karakter)" minlength="6" autocomplete="new-password" required><button type="button" class="eye"></button></div>
+    <div class="f"><input name="password2" type="password" placeholder="Konfirmasi kata sandi" autocomplete="new-password" required><button type="button" class="eye"></button></div>
+    <div class="f"><input name="code" inputmode="numeric" maxlength="6" placeholder="Kode" autocomplete="one-time-code" required><button type="button" class="in-btn" data-send="register">Kirim kode</button></div>
+    <p class="t">Dengan mendaftar, kamu menyetujui ketentuan penggunaan Xozen.</p>
+    <button class="p">Daftar</button>
+    <button type="button" class="l" data-go="login">Sudah punya akun? Masuk</button>
+  </form>
+
+  <form id="reset" hidden data-h="Atur ulang kata sandi|Masukkan username atau nomor WhatsApp. Kode verifikasi dikirim ke WhatsApp akunmu.">
+    <input name="id" placeholder="Username atau nomor WhatsApp" required>
+    <div class="f"><input name="code" inputmode="numeric" maxlength="6" placeholder="Kode" autocomplete="one-time-code" required><button type="button" class="in-btn" data-send="reset">Kirim kode</button></div>
+    <div class="f"><input name="password" type="password" placeholder="Kata sandi baru (min. 6 karakter)" minlength="6" autocomplete="new-password" required><button type="button" class="eye"></button></div>
+    <button class="p">Lanjutkan</button>
+    <button type="button" class="l" data-go="login">Kembali ke login</button>
+  </form>
+</main>
+<script>
+const API="https://api.mypnk.web.id",APP="mainindex.html";
+const $=(s,r=document)=>r.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+if(localStorage.getItem("xz_token"))location.replace(APP);
+const EYE='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+$$(".eye").forEach(b=>{b.innerHTML=EYE;b.setAttribute("aria-label","Tampilkan kata sandi");b.onclick=()=>{const i=b.previousElementSibling;i.type=i.type==="password"?"text":"password"}});
+const say=(t,ok)=>{const m=$("#msg");m.textContent=t||"";m.className=ok?"ok":""};
+function go(v){$$("form").forEach(f=>f.hidden=f.id!==v);const[h,s]=$("#"+v).dataset.h.split("|");$("#h").textContent=h;$("#s").textContent=s;say("")}
+$$("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+async function post(path,body){
+  let r;try{r=await fetch(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})}catch(e){throw Error("Tidak bisa terhubung ke server")}
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.error||"Gagal ("+r.status+")");return j}
+const data=f=>Object.fromEntries(new FormData(f));
+$$("[data-send]").forEach(b=>b.onclick=async()=>{
+  const d=data(b.closest("form")),p=b.dataset.send;
+  if(p==="register"&&!d.wa)return say("Isi nomor WhatsApp dulu");
+  if(p==="reset"&&!d.id)return say("Isi username atau nomor WhatsApp dulu");
+  b.disabled=true;
+  try{await post("/api/auth/code",{purpose:p,wa:d.wa,id:d.id});say("Kode dikirim lewat WhatsApp. Cek pesanmu.",1);
+    let n=60;b.textContent=n+" dtk";const t=setInterval(()=>{if(--n>0)b.textContent=n+" dtk";else{clearInterval(t);b.textContent="Kirim kode";b.disabled=false}},1000)
+  }catch(e){say(e.message);b.disabled=false}});
+$$("form").forEach(f=>f.onsubmit=async e=>{
+  e.preventDefault();const d=data(f),btn=$(".p",f);say("");
+  if(f.id==="register"&&d.password!==d.password2)return say("Konfirmasi kata sandi tidak sama");
+  btn.disabled=true;
+  try{const j=await post("/api/auth/"+f.id,d);
+    if(f.id==="reset"){f.reset();go("login");say("Kata sandi diubah. Silakan masuk.",1)}
+    else{localStorage.setItem("xz_token",j.token);location.href=APP}
+  }catch(x){say(x.message)}
+  btn.disabled=false});
+go("login");
+</script>
+</body>
+</html>
