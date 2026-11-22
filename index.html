@@ -155,7 +155,7 @@ header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;ga
 @media(min-width:761px){#hb{display:flex}#side.hide{display:none}}
 .pinic{display:flex;color:var(--acc)}.pinic svg{width:16px;height:16px}.pinic.bad{color:var(--danger)}
 #toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);max-width:min(92vw,420px);padding:11px 18px;border-radius:999px;background:var(--text);color:var(--bg);font-size:14.5px;line-height:1.35;text-align:center;z-index:9500;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}#toast.on{opacity:1;transform:translate(-50%,0)}
-.bot{border:1px dashed var(--line);border-radius:18px;padding:10px 14px;display:flex;flex-direction:column;gap:10px}.bot summary{cursor:pointer;font-size:13.5px;color:var(--mute);text-align:center}.bot[open] summary{margin-bottom:2px}.orow{display:flex;gap:8px;align-items:center}.orow .af{flex:1;min-width:0}.orow .pill{height:52px;padding:0 16px;font-size:14px}.orow .pill:disabled{opacity:.6}
+.orow{display:flex;gap:8px;align-items:center}.orow .af{flex:1;min-width:0}.orow .pill{height:52px;padding:0 16px;font-size:14px}.orow .pill:disabled{opacity:.6}
 .demo{padding:10px 14px;border:1px dashed var(--acc);border-radius:14px;background:var(--accbg);font-size:13.5px;line-height:1.5;text-align:center}
 .qbox{padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card);margin-top:16px}
 .qn{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}.qn .mute{font-size:14px;font-weight:400}
@@ -232,7 +232,6 @@ const CONFIG = {
   SUPABASE_URL: "https://dbbfoisrphocoyddgyhu.supabase.co",            // contoh: https://abcdxyz.supabase.co
   SUPABASE_ANON_KEY: "sb_publishable_PmYc-4IAfiNVPhvrH0fnvw_OBuK28Gd",  // Project Settings > API Keys > anon / publishable key
   API_KEY: "sk-qwen-9c4c041fd3839283944cb94cefd88e2f9c44d87b32186054",
-  SUPA_OTP: "123-abc",  // kode yang masih diterima fungsi Supabase (OTP asli diverifikasi oleh bot WA)
   MODELS: [
     {id:"xozen-pro",      name:"Xozen Pro",      real:"deepseek-v4.1-flash"},
     {id:"xozen-1017",     name:"Xozen 1017",     real:"deepseek-v4.1-flash-mod"},
@@ -594,12 +593,14 @@ async function admLoad(){
   if(r.code==="session"||r.code==="suspended"){admClose();return out(OUTM[r.code])}
   if(r.code==="forbidden"){admClose();return toast("Akun ini bukan admin.")}
   if(r.error){c.innerHTML=`<div class="err">${esc(r.error)}</div>`;return}
+  const bo=await AR("xz_admin_bot_get");ADM.bot=bo&&!bo.error?bo:null;
   ADM.d=r;admDraw();
 }
 function admDraw(){
   const d=ADM.d,s=d.stats;
   $("#admC").innerHTML=`<div class="stg"><div class="stc"><b>${s.total}</b><span>Pengguna</span></div><div class="stc"><b>${s.suspended}</b><span>Disuspend</span></div><div class="stc"><b>${s.unverified}</b><span>Belum verifikasi</span></div><div class="stc"><b>${s.messages_today}</b><span>Pesan hari ini</span></div></div>
 <div class="qbox"><div class="mute">Limit default per pengguna (pesan per hari)</div><div class="admin2"><input type="number" id="admDef" min="-1" step="1" value="${d.default_limit}" aria-label="Limit default"><button class="pill" data-a="def">Simpan</button></div><p class="mute" style="margin-top:8px;font-size:13px">Isi -1 untuk tanpa batas. Hitungan reset tiap hari pukul 00.00 WIB.</p></div>
+<div class="qbox"><div class="mute">Bot OTP WhatsApp</div><div class="admin2"><input type="text" id="admBu" placeholder="Domain bot (https://...)" value="${esc((ADM.bot&&ADM.bot.url)||"")}" autocomplete="off" autocapitalize="off" spellcheck="false"></div><div class="admin2"><input type="password" id="admBk" placeholder="${ADM.bot&&ADM.bot.has_key?"Key tersimpan ("+esc(ADM.bot.hint||"")+"), kosongkan untuk tetap":"Key API bot"}" autocomplete="off"><button class="pill" data-a="bot">Simpan</button></div><p class="mute" style="margin-top:8px;font-size:13px">Status: <b>${ADM.bot&&ADM.bot.url&&ADM.bot.has_key?"Aktif, OTP dikirim lewat WhatsApp":"Mode demo (kode 123-abc)"}</b>. Kosongkan domain dan key lalu simpan untuk kembali ke mode demo. OTP dikirim ke nomor WhatsApp milik akun pengguna.</p></div>
 <div class="admseg" style="margin-top:18px">${[["all","Semua"],["act","Aktif"],["sus","Suspend"],["unv","Belum verifikasi"]].map(t=>`<button data-f="${t[0]}" class="${ADM.f===t[0]?"on":""}">${t[1]}</button>`).join("")}</div>
 <input type="text" id="admQ" placeholder="Cari username atau nomor…" value="${esc(ADM.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"><div id="admL"></div>`;
   admList();
@@ -622,6 +623,7 @@ $("#adm").addEventListener("click",async e=>{
   const b=e.target.closest("[data-a]");if(!b)return;
   const a=b.dataset.a,card=b.closest(".ucard"),u=card&&ADM.d.users.find(x=>x.id===card.dataset.id);
   if(a==="def"){const n=parseInt($("#admDef").value,10);if(isNaN(n)||n<-1)return toast("Isi angka 0 atau lebih, atau -1 untuk tanpa batas.");return admDo(b,"xz_admin_default",{p_limit:n},"Limit default disimpan.")}
+  if(a==="bot"){const bu=$("#admBu").value.trim(),bk=$("#admBk").value.trim();return admDo(b,"xz_admin_bot_set",{p_url:bu,p_key:bk},bu||bk?"Pengaturan bot OTP disimpan.":"Kembali ke mode demo.")}
   if(!u)return;
   if(a==="lim")return limOpen(u);
   if(a==="rst")return admDo(b,"xz_admin_reset_usage",{p_user:u.id},"Pemakaian "+u.username+" direset.");
@@ -747,7 +749,7 @@ const LEGAL={terms:["Ketentuan Penggunaan",[
 "<b>8. Perubahan.</b> Ketentuan dapat diperbarui. Dengan tetap memakai layanan, Anda menyetujui versi terbaru. Pertanyaan? Hubungi Developer lewat WhatsApp."]],
 privacy:["Kebijakan Privasi",[
 "<b>1. Data akun di server.</b> Kami menyimpan username, nomor WhatsApp, kata sandi dalam bentuk hash (bukan teks asli), waktu pendaftaran, status akun (aktif, ditangguhkan, terverifikasi), batas dan jumlah pemakaian harian.",
-"<b>2. Nomor WhatsApp.</b> Hanya dipakai untuk verifikasi nomor telepon (reset kata sandi dan verifikasi akun yang ditangguhkan). Kode verifikasi dikirim ke nomor WhatsApp Anda. Tidak untuk iklan dan tidak dijual.",
+"<b>2. Nomor WhatsApp.</b> Hanya dipakai untuk verifikasi nomor telepon (reset kata sandi dan verifikasi akun yang ditangguhkan). Kode verifikasi dikirim ke nomor WhatsApp akun Anda. Tidak untuk iklan dan tidak dijual.",
 "<b>3. Obrolan.</b> Riwayat obrolan disimpan di peramban perangkat Anda. Pengecualian: satu obrolan yang Anda pin disimpan di server akun agar bisa dibuka di semua perangkat, dan terhapus saat pin dilepas atau akun dihapus. Pesan dan file yang Anda kirim diteruskan ke server AI untuk membuat jawaban, jadi jangan mengirim data rahasia atau sensitif.",
 "<b>4. Penyimpanan lokal.</b> Kami memakai penyimpanan peramban untuk sesi masuk, tema, dan pengaturan. Tidak ada pelacak iklan.",
 "<b>5. Pihak ketiga.</b> Data akun dan obrolan yang di-pin disimpan di penyedia basis data kami (Supabase). Penyedia AI memproses pesan yang Anda kirim ke Xozen.",
@@ -761,42 +763,28 @@ let cred=null,fs=1,fg={};
 const g=id=>($("#"+id)||{}).value||"",am=(t,ok)=>{const e=$("#am");if(e){e.textContent=t||"";e.style.color=ok?"var(--acc)":""}};
 const FI=(id,ph,o={})=>`<div class="af"><input id="${id}" placeholder="${ph}" type="${o.pw?"password":"text"}" autocomplete="off"${o.n?' inputmode="numeric"':""}${o.pw?' class="pw"':""}>${o.pw?`<button type="button" class="eye" data-eye="${id}" aria-label="Tampilkan kata sandi">${EYE}</button>`:""}</div>`;
 const TOS=t=>`<p class="am">${t}, Anda menyetujui <a data-l="terms">Ketentuan Penggunaan</a> dan <a data-l="privacy">Kebijakan Privasi</a>.</p>`;
-const BOTLS="xz_bot";
-const botCfg=()=>{try{return JSON.parse(localStorage.getItem(BOTLS))||{}}catch(e){return{}}};
-const botBox=()=>{const b=botCfg();return `<details class="bot"${b.u&&b.k?"":" open"}><summary>Server OTP (bot WhatsApp)</summary>${FI("bu","Domain API bot (https://...)")}${FI("bk","Key API bot",{pw:1})}</details>`};
-const botFill=()=>{const b=botCfg();if($("#bu"))$("#bu").value=b.u||"";if($("#bk"))$("#bk").value=b.k||""};
-function botReq(path,body){
-  let u=g("bu").trim().replace(/\/+$/,""),k=g("bk").trim();
-  if(!u||!k)return Promise.resolve({ok:false,error:"Isi domain API bot dan key terlebih dahulu."});
-  if(!/^https?:\/\//i.test(u))u=(/^(localhost|127\.|192\.168\.|10\.)/.test(u)?"http://":"https://")+u;
-  try{localStorage.setItem(BOTLS,JSON.stringify({u,k}))}catch(e){}
-  return fetch(u+path,{method:"POST",headers:{"Content-Type":"application/json","x-api-key":k},body:JSON.stringify(body)})
-    .then(async r=>{let j={};try{j=await r.json()}catch(e){}return Object.assign({ok:false},j,{status:r.status})})
-    .catch(()=>({ok:false,error:"Tidak bisa terhubung ke bot. Periksa domain, HTTPS, dan koneksi."}));
+const DEMOH='<p class="demo"><b>Mode demo:</b> bot OTP belum diatur admin dan kode belum dikirim ke WhatsApp. Gunakan kode <b>123-abc</b>.</p>';
+const otpRow=()=>`<div id="dm"></div><div class="orow">${FI("a5","Kode OTP",{n:1})}<button type="button" class="pill" id="sendotp">Kirim kode</button></div>`;
+function cool(btn,n,t0){btn.disabled=true;btn.textContent=t0+" ("+n+")";const iv=setInterval(()=>{if(!btn.isConnected)return clearInterval(iv);if(--n<=0){clearInterval(iv);btn.disabled=false;btn.textContent=t0}else btn.textContent=t0+" ("+n+")"},1e3)}
+async function sendOtp(btn){
+  const v=$("#auth").dataset.view,sus=v==="sus",id=sus?(cred&&cred.id):g("a1").trim();
+  if(!id)return am("Isi username atau nomor WhatsApp dulu.");
+  am("");btn.disabled=true;btn.textContent="Mengirim...";
+  const r=await RPC("xz_otp_send",{p_id:id,p_password:sus?cred.pw:null,p_purpose:sus?"sus":"reset"});
+  const dm=$("#dm");if(dm)dm.innerHTML=r.demo?DEMOH:"";
+  if(r.error){btn.disabled=false;btn.textContent="Kirim kode";return am(r.error)}
+  if(!r.demo)am("Jika akun ditemukan, kode OTP dikirim ke WhatsApp akun tersebut.",1);
+  cool(btn,60,"Kirim ulang");
 }
-async function sendOtp(btn,purpose){
-  const wa=g("a3").trim();
-  if(!wa)return am("Isi nomor WhatsApp dulu.");
-  am("");btn.disabled=true;const t0=btn.textContent;btn.textContent="Mengirim...";
-  const r=await botReq("/otp/send",{number:wa,purpose});
-  if(r.ok){am("Kode OTP dikirim ke WhatsApp kamu.",1);let n=r.cooldown||60;btn.textContent="Kirim ulang ("+n+")";
-    const iv=setInterval(()=>{if(!btn.isConnected)return clearInterval(iv);if(--n<=0){clearInterval(iv);btn.disabled=false;btn.textContent="Kirim ulang"}else btn.textContent="Kirim ulang ("+n+")"},1e3);return}
-  am(r.error||"Gagal mengirim OTP.");btn.textContent=t0;
-  if(r.retry_after&&r.status===429){let n=Math.min(r.retry_after,120);btn.textContent="Tunggu ("+n+")";
-    const iv=setInterval(()=>{if(!btn.isConnected)return clearInterval(iv);if(--n<=0){clearInterval(iv);btn.disabled=false;btn.textContent=t0}else btn.textContent="Tunggu ("+n+")"},1e3)}
-  else btn.disabled=false;
-}
-const otpRow=()=>`<div class="orow">${FI("a5","Kode OTP",{n:1})}<button type="button" class="pill" id="sendotp">Kirim kode</button></div>`;
 function showAuth(v,msg){
   const L={
     in:FI("a1","Username / nomor WhatsApp")+FI("a2","Kata sandi",{pw:1})+TOS("Dengan mendaftar atau masuk")+`<div class="ar"><a data-v="fg">Lupa kata sandi?</a><a data-v="up">Daftar</a></div><button class="ab" id="go">Masuk</button><div class="ao"><a href="${WA_DEV}" target="_blank" rel="noopener">Developer</a></div>`,
     up:'<p class="am">Pendaftaran tidak memerlukan kode verifikasi. Satu nomor WhatsApp untuk satu akun.</p>'+FI("a1","Username")+FI("a3","Nomor WhatsApp (08xx)",{n:1})+FI("a2","Kata sandi",{pw:1})+FI("a4","Konfirmasi kata sandi",{pw:1})+TOS("Dengan mendaftar")+'<button class="ab" id="go">Daftar</button><div class="ar c"><a data-v="in">Masuk</a></div>',
-    fg:fs===1?'<div class="at">Reset kata sandi</div><p class="am">Masukkan nomor WhatsApp terdaftar, tekan Kirim kode, lalu masukkan OTP yang masuk ke WhatsApp.</p>'+botBox()+FI("a3","Nomor WhatsApp (08xx)",{n:1})+otpRow()+'<button class="ab" id="go">Lanjutkan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'
+    fg:fs===1?'<div class="at">Reset kata sandi</div><p class="am">Masukkan username atau nomor WhatsApp akun. Kode OTP dikirim ke nomor WhatsApp yang terdaftar di akun tersebut.</p>'+FI("a1","Username / nomor WhatsApp")+otpRow()+'<button class="ab" id="go">Lanjutkan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'
       :'<div class="at">Kata sandi baru</div>'+FI("a2","Kata sandi baru",{pw:1})+FI("a4","Konfirmasi kata sandi",{pw:1})+'<button class="ab" id="go">Simpan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>',
-    sus:'<div class="at">Verifikasi nomor telepon</div><p class="am">Akun Anda ditangguhkan admin. Masukkan nomor WhatsApp, kirim kode OTP, lalu verifikasi untuk mengaktifkan akun kembali.</p>'+botBox()+FI("a3","Nomor WhatsApp (08xx)",{n:1})+otpRow()+'<button class="ab" id="go">Verifikasi</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'};
+    sus:'<div class="at">Verifikasi nomor telepon</div><p class="am">Akun Anda ditangguhkan admin. Tekan Kirim kode, lalu masukkan OTP yang dikirim ke WhatsApp akun Anda untuk mengaktifkan akun kembali.</p>'+otpRow()+'<button class="ab" id="go">Verifikasi</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'};
   $("#auth").innerHTML=`<div class="aw"><div class="ac"><div class="ab0">${logo()}<span>Xozen</span></div>${L[v]}<p class="ae" id="am">${esc(msg||SM())}</p></div></div>`;
   $("#auth").dataset.view=v;$("#auth").classList.add("on");
-  botFill();if(v==="sus"&&cred&&/^\+?\d{8,}$/.test(cred.id)&&$("#a3"))$("#a3").value=cred.id;
 }
 async function submit(b){
   const v=$("#auth").dataset.view,id=g("a1").trim(),pw=g("a2"),c=g("a5").trim(),bad=t=>{b.disabled=false;am(t)};am("");b.disabled=true;
@@ -813,8 +801,8 @@ async function submit(b){
     if(pw!==g("a4"))return bad("Konfirmasi kata sandi tidak sama.");
     const r=await RPC("xz_register",{p_username:id,p_wa:wa,p_password:pw});
     return r.token?enter(r):bad(r.error||"Gagal mendaftar.")}
-  if(v==="sus"){const wa=g("a3").trim();if(!wa||!c)return bad("Isi nomor WhatsApp dan kode OTP.");const vr=await botReq("/otp/verify",{number:wa,code:c});if(!vr.ok)return bad(vr.error||"Kode salah atau kedaluwarsa.");const r=await RPC("xz_verify_otp",{p_id:cred.id,p_password:cred.pw,p_code:CONFIG.SUPA_OTP});return r.token?enter(r):bad(r.error||"Kode salah atau kedaluwarsa.")}
-  if(fs===1){const wa=g("a3").trim();if(!wa||!c)return bad("Isi nomor WhatsApp dan kode OTP.");const vr=await botReq("/otp/verify",{number:wa,code:c});if(!vr.ok)return bad(vr.error||"Kode salah atau kedaluwarsa.");fg={id:wa,c:CONFIG.SUPA_OTP};fs=2;return showAuth("fg")}
+  if(v==="sus"){if(!c)return bad("Masukkan kode OTP.");const r=await RPC("xz_verify_otp",{p_id:cred.id,p_password:cred.pw,p_code:c});return r.token?enter(r):bad(r.error||"Kode salah atau kedaluwarsa.")}
+  if(fs===1){if(!id||!c)return bad("Isi username/nomor dan kode OTP.");fg={id,c};fs=2;return showAuth("fg")}
   if(pw.length<6)return bad("Kata sandi minimal 6 karakter.");
   if(pw!==g("a4"))return bad("Konfirmasi kata sandi tidak sama.");
   const r=await RPC("xz_reset_password",{p_id:fg.id,p_code:fg.c,p_password:pw});
@@ -823,7 +811,7 @@ async function submit(b){
 }
 $("#auth").addEventListener("click",e=>{
   const t=e.target,v=t.closest("[data-v]"),l=t.closest("[data-l]"),ey=t.closest("[data-eye]"),go=t.closest("#go"),so=t.closest("#sendotp");
-  if(so)return sendOtp(so,$("#auth").dataset.view==="sus"?"verify":"reset");
+  if(so)return sendOtp(so);
   if(v){fs=1;return showAuth(v.dataset.v)}
   if(l)return legal(l.dataset.l);
   if(ey){const i=$("#"+ey.dataset.eye);return i.type=i.type==="password"?"text":"password"}
