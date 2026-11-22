@@ -83,7 +83,7 @@ header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;ga
 .brow{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
 .chipw{position:relative}
 #chip{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--accbg);color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 35%,transparent);font-size:15px}
-#mpop{display:none;position:absolute;bottom:calc(100% + 8px);left:0;z-index:30;min-width:210px;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:var(--sh)}#mpop.on{display:block}
+#mpop{display:none;position:absolute;bottom:calc(100% + 8px);left:0;z-index:30;min-width:210px;max-height:min(60vh,320px);overflow-y:auto;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:var(--sh)}#mpop.on{display:block}
 #mpop button{display:flex;justify-content:space-between;align-items:center;width:100%;padding:11px 12px;border-radius:10px;font-size:15px}#mpop button:hover,#mpop .on{background:var(--card)}#mpop .on{color:var(--acc)}
 #send{width:42px;height:42px;border-radius:50%;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center}
 #send.off{opacity:.45}
@@ -232,10 +232,12 @@ const CONFIG = {
   SUPABASE_URL: "https://dbbfoisrphocoyddgyhu.supabase.co",            // contoh: https://abcdxyz.supabase.co
   SUPABASE_ANON_KEY: "sb_publishable_PmYc-4IAfiNVPhvrH0fnvw_OBuK28Gd",  // Project Settings > API Keys > anon / publishable key
   API_KEY: "sk-qwen-9c4c041fd3839283944cb94cefd88e2f9c44d87b32186054",
+  // Daftar model di menu = isi array ini. Tambah baris baru untuk menambah model.
+  // name = nama tampil sekaligus id (harus unik), real = nama model asli ke API (kosong = pakai name).
   MODELS: [
-    {id:"xozen-pro",      name:"Xozen Pro",      real:"deepseek-v4.1-flash"},
-    {id:"xozen-1017",     name:"Xozen 1017",     real:"deepseek-v4.1-flash-mod"},
-    {id:"xozen-1017-mod", name:"Xozen 1017 Mod", real:"deepseek-v4.1-flash-1017-mod"}
+    {name:"Xozen Pro",      real:"deepseek-v4.1-flash"},
+    {name:"Xozen 1017",     real:"deepseek-v4.1-flash-mod"},
+    {name:"Xozen 1017 Mod", real:"deepseek-v4.1-flash-1017-mod"}
   ],
   IDENTITY: "Kamu adalah Xozen, asisten AI. Jangan pernah menyebut nama model atau penyedia aslinya. Jawab dalam bahasa yang dipakai pengguna."
 };
@@ -302,7 +304,7 @@ let SES=null;try{SES=JSON.parse(localStorage.getItem("xz_ses"))}catch(e){}
 const NS=SES&&SES.u?SES.u+":":"",K=k=>/^xz_(theme|ses)$/.test(k)?k:NS+k;
 if(NS&&!localStorage.getItem(NS+"xz_chats"))["xz_chats","xz_cur","xz_cfg","xz_model"].forEach(k=>{const v=localStorage.getItem(k);if(v!==null){localStorage.setItem(NS+k,v);localStorage.removeItem(k)}});
 const store={get(k,d){try{const v=localStorage.getItem(K(k));return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(K(k),JSON.stringify(v,(a,x)=>a[0]==="_"?undefined:x))}catch(e){}}};
-let chats=store.get("xz_chats",[]),cur=store.get("xz_cur",null),model=store.get("xz_model","xozen-pro"),theme=store.get("xz_theme","auto"),
+let chats=store.get("xz_chats",[]),cur=store.get("xz_cur",null),model=store.get("xz_model",CONFIG.MODELS[0].name),theme=store.get("xz_theme","auto"),
     cfg=Object.assign({sys:"",temp:.7,key:"",name:(SES&&SES.u)||"Pengguna"},store.get("xz_cfg",{})),
     ctrl=null,busy=false,stick=true,raf=0,tab="umum",menuId=null;
 let pinT=0,pinBusy=false,pinErr=false,pinSig=null,QUOTA=null,toastT=0;
@@ -312,7 +314,9 @@ function parts(f,r){let t=r||"",a=f;const m=a.match(/^\s*<think>([\s\S]*?)(<\/th
 function thinkH(t,live){return t?`<details class="think"${live?" open":""}><summary>${live?"Sedang berpikir…":"Proses berpikir"}${ic("chev")}</summary><div class="tb">${esc(t)}</div></details>`:""}
 function rd(f,r){const p=parts(f,r);return thinkH(p.t,p.open||(r&&!f))+md(p.a)}
 function mk(f,r){const p=parts(f,r);return{role:"assistant",content:p.a,think:p.t||undefined}}
-const M=id=>CONFIG.MODELS.find(m=>m.id===id)||CONFIG.MODELS[0];
+const slug=t=>String(t).toLowerCase().trim().replace(/\s+/g,"-");
+// name dipakai sebagai id; slug dicocokkan juga agar pilihan lama (mis. "xozen-1017") tetap terbaca
+const M=n=>CONFIG.MODELS.find(m=>m.name===n)||CONFIG.MODELS.find(m=>slug(m.name)===n)||CONFIG.MODELS[0];
 const uid=()=>Math.random().toString(36).slice(2,10);
 const getChat=()=>chats.find(c=>c.id===cur);
 const save=()=>{pinTouch();store.set("xz_chats",chats);store.set("xz_cur",cur)};
@@ -357,7 +361,8 @@ function renderSide(){
 }
 function renderComp(){
   $("#chip").innerHTML=M(model).name+ic("chev");
-  $("#mpop").innerHTML=CONFIG.MODELS.map(m=>`<button data-m="${m.id}" class="${m.id===model?"on":""}">${m.name}${m.id===model?ic("check"):""}</button>`).join("");
+  const cm=M(model);
+  $("#mpop").innerHTML=CONFIG.MODELS.map(m=>`<button data-m="${esc(m.name)}" class="${m===cm?"on":""}">${esc(m.name)}${m===cm?ic("check"):""}</button>`).join("");
   $("#inp").placeholder="Pesan "+M(model).name;$("#dt").classList.toggle("on",think);
   const s=$("#send");s.innerHTML=ic(busy?"stop":"up");s.classList.toggle("off",!busy&&!$("#inp").value.trim()&&!tmp.length);
   const ft=$("#foot");if(ft)ft.textContent="Dihasilkan AI, hanya untuk referensi"+(QUOTA&&QUOTA.limit>=0?" · Sisa "+Math.max(0,QUOTA.limit-QUOTA.used)+" pesan hari ini":"");
@@ -414,7 +419,7 @@ async function ask(c){
   if(gq.limit!=null){QUOTA={limit:gq.limit,used:gq.used}}
   if(!gq.ok){c.msgs.push({role:"assistant",err:true,content:gq.error||"Gagal memeriksa kuota pemakaian."});busy=false;c.t=Date.now();save();renderSide();renderMain();renderComp();return}
   renderComp();
-  const body={model:M(model).real,stream:true,temperature:Number(cfg.temp),
+  const body={model:M(model).real||M(model).name,stream:true,temperature:Number(cfg.temp),
     messages:[{role:"system",content:CONFIG.IDENTITY+(think?THINKP:"")+(cfg.sys?"\n"+cfg.sys:"")},...c.msgs.filter(m=>!m.err).map(m=>({role:m.role,content:apiText(m)}))]};
   ctrl=new AbortController();let full="",rs="";
   try{
