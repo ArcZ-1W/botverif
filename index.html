@@ -143,19 +143,38 @@ header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;ga
 .admseg{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:4px 0 14px;background:var(--card)}
 .admseg button{flex:1;padding:10px;color:var(--mute);font:inherit}
 .admseg button.on{background:var(--acc);color:#fff;font-weight:600}
-.admbox{padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
-.admbig{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.15;margin:4px 0;font-variant-numeric:tabular-nums}
-.admlamp{display:flex;align-items:center;gap:14px}
-.admlamp i{width:26px;height:26px;border-radius:50%;background:var(--mute);flex:none}
-.admlamp.s-ready i{background:#12a150}.admlamp.s-qr i,.admlamp.s-pair i,.admlamp.s-starting i{background:#d98a00}
-.admcode{font:700 28px var(--mono);letter-spacing:.12em;text-align:center;padding:14px;border:2px dashed var(--acc);border-radius:14px;margin-top:12px;cursor:pointer;user-select:all}
-.admqr{display:block;margin:12px auto 0;background:#fff;padding:8px;border-radius:12px}
-.admlog{font:13px/1.5 var(--mono);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;max-height:260px;overflow:auto;white-space:pre-wrap;word-break:break-word;margin:0}
-.admlog .er{color:var(--danger)}.admlog .ok{color:#12a150}
-.admrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.admsel{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:11px 13px;font:16px var(--font)}
-.admCmd{font:600 13px var(--mono);margin:12px 0 4px}
 .pill:disabled{opacity:.45}
+.tg{display:inline-flex;align-items:center;height:34px;padding:0 12px;border-radius:17px;border:1px solid var(--line);font-size:14px;margin-left:4px;white-space:nowrap}
+.tg.on{background:var(--accbg);color:var(--acc);border-color:var(--acc)}
+.think{margin:0 0 12px;border-left:2px solid var(--line);padding-left:12px;color:var(--mute);font-size:.92em}
+.think summary{cursor:pointer;list-style:none;font-weight:500;display:flex;align-items:center;gap:6px}.think summary::-webkit-details-marker{display:none}
+.think[open] summary svg{transform:rotate(180deg)}.think .tb{margin-top:6px;white-space:pre-wrap;line-height:1.6}
+.prose .tw{overflow-x:auto;margin:.7em 0}.prose table{border-collapse:collapse;font-size:.94em}.prose th,.prose td{border:1px solid var(--line);padding:7px 12px;text-align:left}.prose th{background:var(--card)}
+#sd{position:absolute;left:50%;bottom:140px;transform:translateX(-50%);width:38px;height:38px;border-radius:50%;background:var(--bg);border:1px solid var(--line);box-shadow:var(--sh);display:none;align-items:center;justify-content:center;z-index:6}#sd.on{display:flex}
+#main{position:relative}
+@media(min-width:761px){#hb{display:flex}#side.hide{display:none}}
+.pinic{display:flex;color:var(--acc)}.pinic svg{width:16px;height:16px}.pinic.bad{color:var(--danger)}
+#toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);max-width:min(92vw,420px);padding:11px 18px;border-radius:999px;background:var(--text);color:var(--bg);font-size:14.5px;line-height:1.35;text-align:center;z-index:9500;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}#toast.on{opacity:1;transform:translate(-50%,0)}
+.demo{padding:10px 14px;border:1px dashed var(--acc);border-radius:14px;background:var(--accbg);font-size:13.5px;line-height:1.5;text-align:center}
+.qbox{padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card);margin-top:16px}
+.qn{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}.qn .mute{font-size:14px;font-weight:400}
+.bar2{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:8px}.bar2 i{display:block;height:100%;border-radius:6px;background:var(--acc)}
+#adm{position:fixed;inset:0;z-index:95;background:var(--bg);display:none;flex-direction:column;padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}#adm.on{display:flex}
+.admh{display:flex;align-items:center;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line)}.admh h2{font-size:20px;font-weight:600;margin-left:6px}
+#admC{flex:1;overflow-y:auto;padding:16px 16px 40px;width:100%;max-width:860px;margin:0 auto}
+.stg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:640px){.stg{grid-template-columns:repeat(4,1fr)}}
+.stc{padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.stc b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2}.stc span{color:var(--mute);font-size:13.5px}
+.admin2{display:flex;gap:8px;margin-top:8px}.admin2 input{flex:1;min-width:0}
+#adm input[type=text],#adm input[type=number],#ld input[type=number]{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:11px 13px;font:16px var(--font)}
+#admQ{margin-bottom:4px}
+.ucard{padding:14px 16px;border:1px solid var(--line);border-radius:16px;margin-top:10px}
+.uh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.un{font-weight:600;overflow:hidden;text-overflow:ellipsis;min-width:0}.uh .sp{flex:1}
+.bd{display:inline-flex;align-items:center;font-size:12.5px;line-height:1;padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.bd.ok{color:#12a150;border-color:#12a150}.bd.warn{color:#c47f00;border-color:#c47f00}.bd.bad{color:var(--danger);border-color:var(--danger)}.bd.acc{color:var(--acc);border-color:var(--acc)}
+.um{color:var(--mute);font-size:14px;line-height:1.7;margin:8px 0 12px}.um b{color:var(--text)}
+.uact{display:flex;flex-wrap:wrap;gap:8px}.uact .pill{padding:8px 14px;font-size:14px}
+#ld{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:96;padding:16px}#ld.on{display:flex}
+#ld .dlg{min-height:0;max-width:380px;border-radius:26px;padding-bottom:22px}#ld input[type=number]{margin-top:12px}
 </style>
 </head>
 <body>
@@ -177,10 +196,11 @@ header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;ga
     <button class="ib" id="hShare" data-i="share" aria-label="Bagikan obrolan"></button>
   </header>
   <div id="chat"><div id="msgs" role="log" aria-live="polite"></div></div>
+  <button id="sd" data-i="chev" aria-label="Ke bawah"></button>
   <div id="comp">
     <div class="box">
       <div id="tray"></div><textarea id="inp" rows="1"></textarea><input type="file" id="fi" multiple hidden accept=".txt,.md,.markdown,.csv,.tsv,.json,.xml,.yaml,.yml,.log,.ini,.toml,.html,.htm,.css,.js,.jsx,.ts,.tsx,.py,.java,.c,.h,.cpp,.cs,.go,.rs,.php,.rb,.sh,.sql,.kt,.swift,.lua,text/*">
-      <div class="brow"><div class="lt"><div class="chipw"><button id="chip" aria-label="Pilih model"></button><div id="mpop"></div></div><button class="ib sm" id="attach" data-i="clip" aria-label="Lampirkan file"></button><button class="ib sm" id="finfo" data-i="info" aria-label="File yang bisa dikirim"></button></div><button id="send" aria-label="Kirim"></button></div>
+      <div class="brow"><div class="lt"><div class="chipw"><button id="chip" aria-label="Pilih model"></button><div id="mpop"></div></div><button class="tg" id="dt" type="button" aria-label="DeepThink">DeepThink</button><button class="ib sm" id="attach" data-i="clip" aria-label="Lampirkan file"></button><button class="ib sm" id="finfo" data-i="info" aria-label="File yang bisa dikirim"></button></div><button id="send" aria-label="Kirim"></button></div>
     </div>
     <div id="foot">Dihasilkan AI, hanya untuk referensi</div>
   </div>
@@ -198,6 +218,9 @@ header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;ga
 <li><b>File sementara:</b> hanya ada di memori browser, tidak disimpan permanen, dan hilang saat halaman dimuat ulang. Isinya ikut dikirim ke server AI.</li>
 </ul></div></div>
 <div id="run"><div class="rdlg"><div class="rh"><span id="rt"></span><button class="ib" id="rTab" data-i="share" aria-label="Buka di tab baru"></button><button class="ib" id="rx" data-i="x" aria-label="Tutup"></button></div><iframe id="rf" sandbox="allow-scripts allow-modals allow-forms allow-downloads allow-popups" title="Pratinjau HTML"></iframe></div></div>
+<div id="adm" role="dialog" aria-modal="true" aria-label="Dasbor admin"><div class="admh"><button class="ib" id="admX" data-i="x" aria-label="Tutup"></button><h2>Dasbor admin</h2><span class="sp"></span><button class="ib" id="admR" data-i="refresh" aria-label="Muat ulang"></button></div><div id="admC"></div></div>
+<div id="ld"><div class="dlg" role="dialog" aria-modal="true" aria-label="Atur limit pemakaian"></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
 <div id="menu"></div>
 <div id="auth"></div><div id="legal"></div>
 
@@ -205,7 +228,8 @@ header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;ga
 /* ================= KONFIGURASI ================= */
 const CONFIG = {
   BASE_URL: "https://bandelbanget.xyz/v1",
-  AUTH_BASE: "https://api.mypnk.web.id",
+  SUPABASE_URL: "https://dbbfoisrphocoyddgyhu.supabase.co",            // contoh: https://abcdxyz.supabase.co
+  SUPABASE_ANON_KEY: "sb_publishable_PmYc-4IAfiNVPhvrH0fnvw_OBuK28Gd",  // Project Settings > API Keys > anon / publishable key
   API_KEY: "sk-qwen-9c4c041fd3839283944cb94cefd88e2f9c44d87b32186054",
   MODELS: [
     {id:"xozen-pro",      name:"Xozen Pro",      real:"deepseek-v4.1-flash"},
@@ -268,6 +292,7 @@ Beri catatan cara menyimpan file.
 
 [end]`;
 const P={clip:'<path d="M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l9-9a3.7 3.7 0 0 1 5.2 5.2l-9 9a1.8 1.8 0 0 1-2.6-2.6l8.4-8.4"/>',menu:'<path d="M4 8h16M4 16h9"/>',newchat:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M12 8v6M9 11h6"/>',share:'<path d="M15 14l5-5-5-5"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/>',copy:'<rect x="9" y="9" width="12" height="12" rx="3"/><path d="M5 15a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2"/>',edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>',like:'<path d="M7 10v11H3V10z"/><path d="M7 10l4-8a3 3 0 0 1 3 3v4h5.5a2 2 0 0 1 2 2.3l-1.4 8a2 2 0 0 1-2 1.7H7"/>',speak:'<path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',panel:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',db:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/>',x:'<path d="M5 5l14 14M19 5L5 19"/>',chev:'<path d="M6 9l6 6 6-6"/>',up:'<path d="M12 19V5M5 12l7-7 7 7" stroke-width="2.6"/>',stop:'<rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/>',dots:'<circle cx="5" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="19" cy="12" r="1.4" fill="currentColor"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',moon:'<path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/>',mon:'<rect x="5" y="5" width="14" height="12" rx="4"/><path d="M9 21h6"/>',check:'<path d="M5 12l5 5 9-10"/>'};
+P.pin='<path d="M12 17v5"/><path d="M8 3h8l-1.2 7.3 2.7 2.7v2H6.5v-2l2.7-2.7z"/>';
 const ic=(n,c)=>`<svg class="${c||""}" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
 const logo=()=>`<img class="logo" src="${LOGO}" alt="" draggable="false">`;
 const ring=s=>`<svg class="ring${s?" spin":""}" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/></svg>`;
@@ -279,11 +304,17 @@ const store={get(k,d){try{const v=localStorage.getItem(K(k));return v?JSON.parse
 let chats=store.get("xz_chats",[]),cur=store.get("xz_cur",null),model=store.get("xz_model","xozen-pro"),theme=store.get("xz_theme","auto"),
     cfg=Object.assign({sys:"",temp:.7,key:"",name:(SES&&SES.u)||"Pengguna"},store.get("xz_cfg",{})),
     ctrl=null,busy=false,stick=true,raf=0,tab="umum",menuId=null;
-let tmp=[],tnote="",tn=0;
+let pinT=0,pinBusy=false,pinErr=false,pinSig=null,QUOTA=null,toastT=0;
+let tmp=[],tnote="",tn=0,think=store.get("xz_think",false);
+const THINKP="\nSebelum menjawab, tulis proses berpikirmu singkat di dalam tag <think>...</think>, lalu beri jawaban akhir setelah tag penutup.";
+function parts(f,r){let t=r||"",a=f;const m=a.match(/^\s*<think>([\s\S]*?)(<\/think>|$)/);if(m){t+=m[1];a=a.slice(m[0].length)}return{t:t.trim(),a,open:!!m&&!m[2]}}
+function thinkH(t,live){return t?`<details class="think"${live?" open":""}><summary>${live?"Sedang berpikir…":"Proses berpikir"}${ic("chev")}</summary><div class="tb">${esc(t)}</div></details>`:""}
+function rd(f,r){const p=parts(f,r);return thinkH(p.t,p.open||(r&&!f))+md(p.a)}
+function mk(f,r){const p=parts(f,r);return{role:"assistant",content:p.a,think:p.t||undefined}}
 const M=id=>CONFIG.MODELS.find(m=>m.id===id)||CONFIG.MODELS[0];
 const uid=()=>Math.random().toString(36).slice(2,10);
 const getChat=()=>chats.find(c=>c.id===cur);
-const save=()=>{store.set("xz_chats",chats);store.set("xz_cur",cur)};
+const save=()=>{pinTouch();store.set("xz_chats",chats);store.set("xz_cur",cur)};
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const mq=matchMedia("(prefers-color-scheme: dark)");
 function applyTheme(){const d=theme==="auto"?mq.matches:theme==="dark";document.documentElement.dataset.theme=d?"dark":"light";const m=document.querySelector("meta[name=theme-color]");if(m)m.content=d?"#16171b":"#ffffff"}
@@ -296,10 +327,12 @@ function md(src){
   src.split(/```/).forEach((p,i)=>{
     if(i%2){const nl=p.indexOf("\n"),lang=nl>-1?p.slice(0,nl).trim():"",code=nl>-1?p.slice(nl+1):p;
       out+=`<div class="codebox"><div class="codehead"><span>${esc(lang||"kode")}</span><span class="cb">${/^(html?|xhtml)$/i.test(lang)||/^\s*<(!doctype|html)/i.test(code)?"<button data-run><span>Jalankan</span></button>":""}<button data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg><span>Salin</span></button><button data-dl><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m-5-4 5 5 5-5M5 20h14"/></svg><span>Unduh</span></button></span></div><pre>${esc(code.replace(/\n$/,""))}</pre></div>`;return}
+    const TB=[];p=p.replace(/(^\|.*\|[ \t]*\n)(\|[ \t:|-]+\|[ \t]*\n)((?:\|.*\|[ \t]*(?:\n|$))*)/gm,(a,h,sp,r)=>{const row=x=>x.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim());return "\u0001"+(TB.push('<div class="tw"><table><thead><tr>'+row(h).map(c=>"<th>"+inline(c)+"</th>").join("")+"</tr></thead><tbody>"+r.split("\n").filter(Boolean).map(x=>"<tr>"+row(x).map(c=>"<td>"+inline(c)+"</td>").join("")+"</tr>").join("")+"</tbody></table></div>")-1)+"\u0001\n"});
     let list=null,buf=[];
     const fP=()=>{if(buf.length){out+="<p>"+buf.join("<br>")+"</p>";buf=[]}},fL=()=>{if(list){out+=`</${list}>`;list=null}};
     p.split("\n").forEach(l=>{let m;
-      if((m=l.match(/^(#{1,3})\s+(.*)/))){fP();fL();out+=`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`}
+      if((m=l.match(/^\u0001(\d+)\u0001$/))){fP();fL();out+=TB[+m[1]]}
+      else if((m=l.match(/^(#{1,3})\s+(.*)/))){fP();fL();out+=`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`}
       else if(/^\s*(-{3,}|\*{3,})\s*$/.test(l)){fP();fL();out+="<hr>"}
       else if((m=l.match(/^\s*[-*]\s+(.*)/))){fP();if(list!=="ul"){fL();out+="<ul>";list="ul"}out+=`<li>${inline(m[1])}</li>`}
       else if((m=l.match(/^\s*\d+[.)]\s+(.*)/))){fP();if(list!=="ol"){fL();out+="<ol>";list="ol"}out+=`<li>${inline(m[1])}</li>`}
@@ -314,18 +347,19 @@ function md(src){
 function grp(t){const d=new Date(),s=new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime(),a=t||0;return a>=s?"Hari ini":a>=s-6*864e5?"7 Hari":a>=s-29*864e5?"30 Hari":"Lebih lama"}
 function renderSide(){
   const el=$("#list"),q=$("#q").value.toLowerCase();el.innerHTML="";let g="";
-  chats.slice().sort((a,b)=>(b.t||0)-(a.t||0)).filter(c=>!q||c.title.toLowerCase().includes(q)).forEach(c=>{
-    const k=grp(c.t);if(k!==g){g=k;el.insertAdjacentHTML("beforeend",`<div class="gh">${k}</div>`)}
+  chats.slice().sort((a,b)=>(b.pin?1:0)-(a.pin?1:0)||(b.t||0)-(a.t||0)).filter(c=>!q||c.title.toLowerCase().includes(q)).forEach(c=>{
+    const k=c.pin?"Dipin":grp(c.t);if(k!==g){g=k;el.insertAdjacentHTML("beforeend",`<div class="gh">${k}</div>`)}
     const d=document.createElement("div");d.className="item"+(c.id===cur?" on":"");d.dataset.id=c.id;
-    d.innerHTML=`<span class="t">${esc(c.title)}</span><button class="more" aria-label="Opsi obrolan">${ic("dots")}</button>`;el.appendChild(d);
+    d.innerHTML=(c.pin?`<span class="pinic${pinErr||c.pd?" bad":""}" title="${pinErr||c.pd?"Belum tersinkron ke akun":"Tersimpan di akun"}">${ic("pin")}</span>`:"")+`<span class="t">${esc(c.title)}</span><button class="more" aria-label="Opsi obrolan">${ic("dots")}</button>`;el.appendChild(d);
   });
   $("#pav").textContent=(cfg.name||"P")[0].toUpperCase();$("#pname").textContent=cfg.name||"Pengguna";
 }
 function renderComp(){
   $("#chip").innerHTML=M(model).name+ic("chev");
   $("#mpop").innerHTML=CONFIG.MODELS.map(m=>`<button data-m="${m.id}" class="${m.id===model?"on":""}">${m.name}${m.id===model?ic("check"):""}</button>`).join("");
-  $("#inp").placeholder="Pesan "+M(model).name;
+  $("#inp").placeholder="Pesan "+M(model).name;$("#dt").classList.toggle("on",think);
   const s=$("#send");s.innerHTML=ic(busy?"stop":"up");s.classList.toggle("off",!busy&&!$("#inp").value.trim()&&!tmp.length);
+  const ft=$("#foot");if(ft)ft.textContent="Dihasilkan AI, hanya untuk referensi"+(QUOTA&&QUOTA.limit>=0?" · Sisa "+Math.max(0,QUOTA.limit-QUOTA.used)+" pesan hari ini":"");
 }
 function msgEl(m,i){
   const c=getChat(),last=i===c.msgs.length-1,w=document.createElement("div");
@@ -334,7 +368,7 @@ function msgEl(m,i){
     const fl=(m.files||[]).map(f=>`<span class="fc"><span class="fn">${esc(f.name)}</span><span class="fs">${kb(f.size)}</span></span>`).join("");w.innerHTML=(fl?`<div class="fl">${fl}</div>`:"")+(m.content?`<div class="bub"></div><div class="acts"><button data-a="copy" aria-label="Salin">${ic("copy")}</button><button data-a="edit" aria-label="Edit">${ic("edit")}</button></div>`:"");
     const bb=w.querySelector(".bub");if(bb)bb.textContent=m.content;return w;
   }
-  w.innerHTML=`<div class="prose">${m.err?`<div class="err">${esc(m.content)}</div>`:md(m.content)}</div><div class="acts">`+(m.err?`<button class="txt" data-a="retry">Coba lagi</button>`:
+  w.innerHTML=`<div class="prose">${m.err?`<div class="err">${esc(m.content)}</div>`:thinkH(m.think,false)+md(m.content)}</div><div class="acts">`+(m.err?`<button class="txt" data-a="retry">Coba lagi</button>`:
     `<button data-a="copy" aria-label="Salin">${ic("copy")}</button>${last?`<button data-a="regen" aria-label="Ulangi">${ic("refresh")}</button>`:""}<button data-a="up" class="${m.fb===1?"on":""}" aria-label="Suka">${ic("like")}</button><button data-a="down" class="${m.fb===-1?"on":""}" aria-label="Tidak suka">${ic("like","flip")}</button><button data-a="speak" aria-label="Bacakan">${ic("speak")}</button><button data-a="share" aria-label="Bagikan">${ic("share")}</button>`)+`</div>`;
   return w;
 }
@@ -374,9 +408,14 @@ async function ask(c){
   busy=true;renderComp();
   const box=$("#msgs"),w=document.createElement("div");w.className="msg ai";
   w.innerHTML=`<div class="prose">${ring(true)}</div>`;box.appendChild(w);const b=w.firstChild;scrollDown();
+  const gq=await RPC("xz_use_message",{p_token:tk()});
+  if(gq.code==="session"||gq.code==="suspended"){busy=false;return out(OUTM[gq.code])}
+  if(gq.limit!=null){QUOTA={limit:gq.limit,used:gq.used}}
+  if(!gq.ok){c.msgs.push({role:"assistant",err:true,content:gq.error||"Gagal memeriksa kuota pemakaian."});busy=false;c.t=Date.now();save();renderSide();renderMain();renderComp();return}
+  renderComp();
   const body={model:M(model).real,stream:true,temperature:Number(cfg.temp),
-    messages:[{role:"system",content:CONFIG.IDENTITY+(cfg.sys?"\n"+cfg.sys:"")},...c.msgs.filter(m=>!m.err).map(m=>({role:m.role,content:apiText(m)}))]};
-  ctrl=new AbortController();let full="";
+    messages:[{role:"system",content:CONFIG.IDENTITY+(think?THINKP:"")+(cfg.sys?"\n"+cfg.sys:"")},...c.msgs.filter(m=>!m.err).map(m=>({role:m.role,content:apiText(m)}))]};
+  ctrl=new AbortController();let full="",rs="";
   try{
     const r=await fetch(CONFIG.BASE_URL+"/chat/completions",{method:"POST",signal:ctrl.signal,
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+(cfg.key||CONFIG.API_KEY)},body:JSON.stringify(body)});
@@ -387,14 +426,14 @@ async function ask(c){
       buf+=dec.decode(value,{stream:true});const lines=buf.split("\n");buf=lines.pop();
       for(const ln of lines){
         const s=ln.trim();if(!s.startsWith("data:"))continue;const d=s.slice(5).trim();if(d==="[DONE]")continue;
-        try{const j=JSON.parse(d),t=j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content;
-          if(t){full+=t;if(!raf)raf=requestAnimationFrame(()=>{raf=0;b.innerHTML=md(full);scrollDown()})}}catch(e){}
+        try{const j=JSON.parse(d),dl=j.choices&&j.choices[0]&&j.choices[0].delta||{},t=dl.content;if(dl.reasoning_content){rs+=dl.reasoning_content;if(!raf)raf=requestAnimationFrame(()=>{raf=0;b.innerHTML=rd(full,rs);scrollDown()})}
+          if(t){full+=t;if(!raf)raf=requestAnimationFrame(()=>{raf=0;b.innerHTML=rd(full,rs);scrollDown()})}}catch(e){}
       }
     }
-    if(!full)throw{status:0,empty:true};
-    c.msgs.push({role:"assistant",content:full});
+    if(!full&&!rs)throw{status:0,empty:true};
+    c.msgs.push(mk(full,rs));
   }catch(e){
-    if(e&&e.name==="AbortError"){if(full)c.msgs.push({role:"assistant",content:full})}
+    if(e&&e.name==="AbortError"){if(full||rs)c.msgs.push(mk(full,rs))}
     else c.msgs.push({role:"assistant",err:true,content:e&&e.status!==undefined?(e.empty?"Xozen tidak mengirim jawaban. Coba lagi.":friendlyErr(e.status)):"Gagal terhubung. Periksa koneksi internet kamu."});
   }
   busy=false;ctrl=null;c.t=Date.now();save();renderSide();renderMain();renderComp();
@@ -416,13 +455,14 @@ $("#brand").innerHTML=logo()+"Xozen";
 $("#inp").addEventListener("input",autoSize);
 $("#inp").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing&&matchMedia("(hover:hover)").matches){e.preventDefault();send()}});
 $("#send").onclick=()=>busy?stop():send();
+$("#dt").onclick=e=>{e.stopPropagation();think=!think;store.set("xz_think",think);renderComp()};
 $("#newChat").onclick=newChat;$("#hNew").onclick=newChat;
-$("#hb").onclick=()=>{$("#side").classList.add("open");$("#scrim").classList.add("on")};
+$("#hb").onclick=()=>{if(innerWidth>760)$("#side").classList.toggle("hide");else{$("#side").classList.add("open");$("#scrim").classList.add("on")}};
 $("#sClose").onclick=closeSide;$("#scrim").onclick=closeSide;
 $("#sSearchBtn").onclick=()=>{$("#sq").classList.toggle("on");if($("#sq").classList.contains("on"))$("#q").focus();else{$("#q").value="";renderSide()}};
 $("#q").addEventListener("input",renderSide);
 $("#hShare").onclick=e=>{const c=getChat();if(c)cp(chatText(c),e.currentTarget)};
-$("#chat").addEventListener("scroll",()=>{const c=$("#chat");stick=c.scrollHeight-c.scrollTop-c.clientHeight<80});
+$("#chat").addEventListener("scroll",()=>{const c=$("#chat");stick=c.scrollHeight-c.scrollTop-c.clientHeight<80;$("#sd").classList.toggle("on",!stick&&!$("#main").classList.contains("empty"))});$("#sd").onclick=()=>{stick=true;scrollDown()};
 $("#chip").onclick=e=>{e.stopPropagation();$("#menu").classList.remove("on");$("#mpop").classList.toggle("on")};
 $("#mpop").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;model=b.dataset.m;store.set("xz_model",model);renderComp()};
 document.addEventListener("click",()=>{$("#menu").classList.remove("on");$("#mpop").classList.remove("on")});
@@ -430,15 +470,18 @@ $("#list").onclick=e=>{
   const it=e.target.closest(".item");if(!it)return;const id=it.dataset.id;
   if(e.target.closest(".more")){
     e.stopPropagation();menuId=id;const r=e.target.closest(".more").getBoundingClientRect(),m=$("#menu");
-    m.innerHTML=`<button data-x="ren">${ic("edit")}Ganti nama</button><button data-x="del" class="red">${ic("x")}Hapus</button>`;
-    m.style.top=Math.min(r.bottom+4,innerHeight-120)+"px";m.style.left=Math.max(8,r.right-170)+"px";m.classList.add("on");return;
+    const cc=chats.find(x=>x.id===id);m.innerHTML=`<button data-x="pin">${ic("pin")}${cc&&cc.pin?"Lepas pin":"Pin obrolan"}</button><button data-x="ren">${ic("edit")}Ganti nama</button><button data-x="del" class="red">${ic("x")}Hapus</button>`;
+    m.style.top=Math.min(r.bottom+4,innerHeight-170)+"px";m.style.left=Math.max(8,r.right-170)+"px";m.classList.add("on");return;
   }
   if(busy)stop();cur=id;save();renderAll();closeSide();
 };
-$("#menu").onclick=e=>{
+$("#menu").onclick=async e=>{
   const b=e.target.closest("[data-x]");if(!b)return;const c=chats.find(x=>x.id===menuId);if(!c)return;
+  if(b.dataset.x==="pin")return pinToggle(c.id);
   if(b.dataset.x==="ren"){const n=prompt("Nama obrolan",c.title);if(n&&n.trim())c.title=n.trim().slice(0,60)}
-  else if(confirm("Hapus obrolan ini?")){chats=chats.filter(x=>x!==c);if(cur===c.id)cur=chats.length?chats[chats.length-1].id:null}
+  else if(confirm(c.pin?"Hapus obrolan yang di-pin ini? Salinannya di akun (semua perangkat) ikut terhapus.":"Hapus obrolan ini?")){
+    if(c.pin){const r=await RPC("xz_pin_clear",{p_token:tk(),p_chat_id:c.id});if(r.error)return toast("Gagal menghapus dari akun: "+r.error)}
+    chats=chats.filter(x=>x!==c);if(cur===c.id)cur=chats.length?chats[chats.length-1].id:null}
   save();renderAll();
 };
 $("#msgs").addEventListener("click",e=>{
@@ -499,14 +542,14 @@ $("#rTab").onclick=()=>window.open(URL.createObjectURL(new Blob([$("#run").datas
 $("#run").onclick=e=>{if(e.target.id==="run")closeRun()};
 
 /* pengaturan */
-const TABS=[["umum","Umum","gear"],["profil","Profil","user"],["data","Data","db"],["tentang","Tentang","info"],...(SES&&SES.adm||location.hash==="#admin"?[["admin","Admin","gear"]]:[])];
-function renderTab(){clearInterval(window.ADMT);
+const TABS=[["umum","Umum","gear"],["profil","Profil","user"],["data","Data","db"],["tentang","Tentang","info"],...(SES&&SES.adm?[["admin","Admin","gear"]]:[])];
+function renderTab(){
   $("#tabs").innerHTML=TABS.map(t=>`<button data-t="${t[0]}" class="${t[0]===tab?"on":""}">${ic(t[2])}${t[1]}</button>`).join("");
   const b=$("#pbody");
   if(tab==="admin")admRender();
   if(tab==="umum")b.innerHTML=`<div class="lbl">Tema</div><div class="themes">`+[["light","Terang","sun"],["dark","Gelap","moon"],["auto","Sistem","mon"]].map(t=>`<button data-th="${t[0]}" class="${theme===t[0]?"on":""}">${ic(t[2])}${t[1]}</button>`).join("")+
     `</div><div class="lbl">Instruksi tambahan untuk Xozen</div><textarea id="sSys" placeholder="Contoh: Jawab singkat dalam bahasa Indonesia.">${esc(cfg.sys)}</textarea><button class="pill" data-d="preset" style="margin-top:8px">Pakai preset File Generator</button><div class="lbl">Gaya jawaban</div><input type="range" id="sTemp" min="0" max="2" step="0.1" value="${cfg.temp}"><div class="rng"><span>Presisi</span><span>Kreatif</span></div><div class="lbl">API key</div><input type="password" id="sKey" placeholder="Kosongkan untuk pakai bawaan file" value="${esc(cfg.key)}">`;
-  if(tab==="profil")b.innerHTML=`<div class="lbl">Nama</div><input type="text" id="sName" value="${esc(cfg.name)}" maxlength="30"><p class="mute" style="margin-top:14px">Obrolan tersimpan di browser perangkat ini saja.</p><div class="row2"><span>Akun: <b>${esc(SES&&SES.u||"")}</b></span><button class="pill red" data-d="logout">Keluar</button></div>${SES&&SES.adm?'<div class="lbl">Pengguna terdaftar</div><div id="ulist" class="mute">Memuat…</div>':""}`;if(tab==="profil"&&SES&&SES.adm)loadUsers();
+  if(tab==="profil")b.innerHTML=`<div class="lbl">Nama</div><input type="text" id="sName" value="${esc(cfg.name)}" maxlength="30"><p class="mute" style="margin-top:14px">Obrolan disimpan di browser perangkat ini. Obrolan yang kamu pin (maks. 1) disimpan di akun dan muncul di semua perangkat.</p>${QUOTA?quotaH():""}<div class="row2"><span>Akun: <b>${esc(SES&&SES.u||"")}</b></span><button class="pill red" data-d="logout">Keluar</button></div>`;
   if(tab==="data")b.innerHTML=`<div class="row2"><span>Ekspor data</span><button class="pill" data-d="export">Ekspor</button></div><div class="row2"><span>Hapus semua obrolan</span><button class="pill red" data-d="wipe">Hapus semua</button></div>`;
   if(tab==="tentang")b.innerHTML=`<div class="row2"><span>Xozen</span><span class="mute">Asisten AI</span></div><p class="mute" style="margin-top:14px">Dihasilkan AI, hanya untuk referensi.</p>`;
 }
@@ -516,13 +559,12 @@ $("#mx").onclick=()=>$("#modal").classList.remove("on");
 $("#modal").onclick=e=>{if(e.target.id==="modal")$("#modal").classList.remove("on")};
 $("#tabs").onclick=e=>{const b=e.target.closest("[data-t]");if(b){tab=b.dataset.t;renderTab()}};
 $("#pbody").addEventListener("click",async e=>{
-  const th=e.target.closest("[data-th]"),d=e.target.closest("[data-d]"),ua=e.target.closest("[data-act]");
-  if(d&&d.dataset.d==="logout")return out();
-  if(ua){const a=ua.dataset.act,n=ua.dataset.u;if(a==="del"&&!confirm("Hapus akun "+n+"?"))return;await API("/admin/users/"+encodeURIComponent(n)+(a==="del"?"":"/"+a),a==="del"?null:{},a==="del"?"DELETE":"POST");return loadUsers()}
+  const th=e.target.closest("[data-th]"),d=e.target.closest("[data-d]");
+  if(d&&d.dataset.d==="logout")return logout();
   if(th){theme=th.dataset.th;store.set("xz_theme",theme);applyTheme();renderTab()}
   if(d&&d.dataset.d==="preset"){cfg.sys=PRESET;store.set("xz_cfg",cfg);renderTab()}
   if(d&&d.dataset.d==="export"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(chats,null,2)],{type:"application/json"}));a.download="xozen-obrolan.json";a.click()}
-  if(d&&d.dataset.d==="wipe"&&confirm("Hapus semua obrolan? Tindakan ini tidak bisa dibatalkan.")){chats=[];cur=null;save();renderAll();$("#modal").classList.remove("on")}
+  if(d&&d.dataset.d==="wipe"&&confirm("Hapus semua obrolan"+(chats.some(x=>x.pin)?", termasuk yang di-pin di akunmu":"")+"? Tindakan ini tidak bisa dibatalkan.")){const r=await RPC("xz_pin_clear",{p_token:tk(),p_chat_id:null});if(r.error&&chats.some(x=>x.pin))return toast("Gagal menghapus pin di akun: "+r.error);chats=[];cur=null;pinSig=null;clearTimeout(pinT);save();renderAll();$("#modal").classList.remove("on")}
 });
 $("#pbody").addEventListener("input",e=>{
   const i=e.target.id;
@@ -530,157 +572,183 @@ $("#pbody").addEventListener("input",e=>{
   if(i==="sName"){cfg.name=e.target.value;renderSide()}
   store.set("xz_cfg",cfg);
 });
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeRun();$("#imodal").classList.remove("on");$("#modal").classList.remove("on");$("#menu").classList.remove("on");$("#mpop").classList.remove("on");closeSide()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeRun();admClose();$("#imodal").classList.remove("on");$("#modal").classList.remove("on");$("#menu").classList.remove("on");$("#mpop").classList.remove("on");closeSide()}});
 
 if(!getChat()&&chats.length)cur=chats[chats.length-1].id;
 applyTheme();renderAll();
 
-/* ================= ADMIN: sisa token, bot WhatsApp (Baileys), xctl ================= */
-const ADM={sub:"tok",xh:[],xi:-1,xo:""};
-const admBase=()=>(localStorage.getItem("xz_admbase")||(/^https?:$/.test(location.protocol)?location.origin:"")).replace(/\/$/,"");
-const admPw=()=>{try{return sessionStorage.getItem("xz_admt")||""}catch(e){return""}};
-async function admApi(p,body){
-  try{
-    const r=await fetch(admBase()+p,{method:body===undefined?"GET":"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+admPw()},body:body===undefined?undefined:JSON.stringify(body)});
-    const d=await r.json().catch(()=>({error:"Respons tidak valid"}));d._s=r.status;return d;
-  }catch(e){return{_s:0,error:"Tidak bisa terhubung ke server admin."}}
+/* ================= ADMIN: dasbor pengguna (Supabase) ================= */
+const ADM={d:null,q:"",f:"all"},AR=(fn,a)=>RPC(fn,Object.assign({p_token:tk()},a||{}));
+function admRender(){$("#pbody").innerHTML=`<p class="mute">Lihat pengguna, suspend akun untuk verifikasi nomor telepon, dan atur limit pemakaian harian.</p><button class="pill" data-adm="open" style="margin-top:12px">Buka dasbor admin</button>`}
+$("#pbody").addEventListener("click",e=>{if(e.target.closest('[data-adm="open"]'))admOpen()});
+const fT=t=>{if(!t)return"-";const x=(Date.now()-new Date(t))/1e3;if(x<60)return"baru saja";if(x<3600)return Math.floor(x/60)+" mnt lalu";if(x<86400)return Math.floor(x/3600)+" jam lalu";if(x<604800)return Math.floor(x/86400)+" hari lalu";return new Date(t).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})};
+const fL=n=>n<0?"∞":n;
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),3200)}
+async function admOpen(){$("#modal").classList.remove("on");$("#adm").classList.add("on");await admLoad()}
+function admClose(){$("#adm").classList.remove("on");$("#ld").classList.remove("on")}
+async function admLoad(){
+  const c=$("#admC");if(!ADM.d)c.innerHTML='<p class="mute">Memuat…</p>';
+  const r=await AR("xz_admin_overview");
+  if(r.code==="session"||r.code==="suspended"){admClose();return out(OUTM[r.code])}
+  if(r.code==="forbidden"){admClose();return toast("Akun ini bukan admin.")}
+  if(r.error){c.innerHTML=`<div class="err">${esc(r.error)}</div>`;return}
+  ADM.d=r;admDraw();
 }
-function admRender(){
-  const b=$("#pbody");
-  if(!admPw()){
-    b.innerHTML=`<div class="lbl">URL server admin</div><input type="text" id="admUrl" placeholder="${esc(location.origin)}" value="${esc(localStorage.getItem("xz_admbase")||"")}" autocapitalize="off" spellcheck="false"><div class="lbl">Password admin</div><input type="password" id="admPw" autocomplete="current-password"><p class="mute" id="admErr" style="color:var(--danger);min-height:1.4em;margin-top:8px"></p><button class="pill" data-adm="login">Masuk</button>`;
-    return;
-  }
-  b.innerHTML=`<div class="admseg">`+[["tok","Token"],["wa","WhatsApp"],["xc","xctl"]].map(t=>`<button data-adm="sub" data-s="${t[0]}" class="${ADM.sub===t[0]?"on":""}">${t[1]}</button>`).join("")+`</div><div id="admBody"></div><div class="row2"><span class="mute" style="min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(admBase()||"(URL belum diisi)")}</span><button class="pill red" data-adm="exit">Keluar admin</button></div>`;
-  admSub();
+function admDraw(){
+  const d=ADM.d,s=d.stats;
+  $("#admC").innerHTML=`<div class="stg"><div class="stc"><b>${s.total}</b><span>Pengguna</span></div><div class="stc"><b>${s.suspended}</b><span>Disuspend</span></div><div class="stc"><b>${s.unverified}</b><span>Belum verifikasi</span></div><div class="stc"><b>${s.messages_today}</b><span>Pesan hari ini</span></div></div>
+<div class="qbox"><div class="mute">Limit default per pengguna (pesan per hari)</div><div class="admin2"><input type="number" id="admDef" min="-1" step="1" value="${d.default_limit}" aria-label="Limit default"><button class="pill" data-a="def">Simpan</button></div><p class="mute" style="margin-top:8px;font-size:13px">Isi -1 untuk tanpa batas. Hitungan reset tiap hari pukul 00.00 WIB.</p></div>
+<div class="admseg" style="margin-top:18px">${[["all","Semua"],["act","Aktif"],["sus","Suspend"],["unv","Belum verifikasi"]].map(t=>`<button data-f="${t[0]}" class="${ADM.f===t[0]?"on":""}">${t[1]}</button>`).join("")}</div>
+<input type="text" id="admQ" placeholder="Cari username atau nomor…" value="${esc(ADM.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"><div id="admL"></div>`;
+  admList();
 }
-function admSub(){
-  clearInterval(window.ADMT);const el=$("#admBody");if(!el)return;
-  if(ADM.sub==="tok"){
-    el.innerHTML=`<div class="admbox"><div class="mute">Sisa token untuk API key yang dipakai Xozen</div><div class="admbig" id="admTv">-</div><div class="mute" id="admTl">Belum dicek</div></div><button class="pill" data-adm="chk" style="margin-top:12px">Cek ulang</button><details style="margin-top:12px"><summary class="mute">Respons mentah</summary><pre class="admlog" id="admTr"></pre></details>`;
-    admChk();
-  }else if(ADM.sub==="wa"){
-    el.innerHTML=`<div class="admbox"><div class="admlamp s-stopped" id="admLamp"><i></i><div><b id="admWt">Berhenti</b><div class="mute" id="admWm"></div></div></div><div class="admcode" id="admCode" hidden title="Ketuk untuk menyalin"></div><img class="admqr" id="admQr" alt="QR login WhatsApp" width="260" height="260" hidden></div>
-<div class="lbl">Cara login</div><select class="admsel" id="admMode"><option value="qr">Scan QR</option><option value="pair">Kode pairing (pakai nomor HP)</option></select><input type="text" id="admPh" inputmode="tel" placeholder="Nomor WA, mis. 628123456789" style="margin-top:8px" hidden>
-<div class="admrow"><button class="pill" data-adm="wa" data-a="start">Mulai</button><button class="pill" data-adm="wa" data-a="restart">Restart</button><button class="pill" data-adm="wa" data-a="stop">Berhenti</button><button class="pill red" data-adm="wa" data-a="logout">Logout</button></div><p class="mute" id="admMsg" style="min-height:1.4em"></p><div class="lbl">Log bot</div><div class="admlog" id="admLog">Belum ada log.</div>`;
-    admWA();
-    window.ADMT=setInterval(()=>{if(!$("#modal").classList.contains("on")||tab!=="admin"||ADM.sub!=="wa")return clearInterval(window.ADMT);admWA()},3000);
-  }else{
-    el.innerHTML=`<div style="display:flex;gap:8px"><input type="text" id="admXi" placeholder="--help" autocapitalize="off" spellcheck="false" aria-label="Perintah xctl"><button class="pill" data-adm="x">Jalankan</button></div><div id="admXo">${ADM.xo||'<p class="mute" style="margin-top:12px">Output muncul di sini. Panah atas untuk perintah sebelumnya.</p>'}</div>`;
-  }
+function admList(){
+  const q=ADM.q.trim().toLowerCase(),f=ADM.f,qd=q.replace(/\D/g,""),qw=qd.startsWith("0")?"62"+qd.slice(1):qd;
+  const a=ADM.d.users.filter(u=>(f==="all"||(f==="act"&&!u.suspended)||(f==="sus"&&u.suspended)||(f==="unv"&&!u.verified))&&(!q||u.username.toLowerCase().includes(q)||(qw&&u.wa.includes(qw))));
+  $("#admL").innerHTML=a.map(u=>{
+    const eff=u.effective_limit,pc=eff>0?Math.min(100,u.used_today/eff*100):0,adm=u.role==="admin",
+      lim=u.daily_limit==null?"Default ("+fL(eff)+")":u.daily_limit<0?"Tanpa batas":u.daily_limit+" per hari";
+    return `<div class="ucard" data-id="${esc(u.id)}"><div class="uh"><span class="av" style="width:34px;height:34px;font-size:15px">${esc(u.username[0].toUpperCase())}</span><span class="un">${esc(u.username)}</span><span class="sp"></span>${adm?'<span class="bd acc">Admin</span>':""}${u.suspended?'<span class="bd bad">Suspend</span>':""}<span class="bd ${u.verified?"ok":"warn"}">${u.verified?"Terverifikasi":"Belum verifikasi"}</span></div>
+<div class="um">+${esc(u.wa)}<br>Daftar ${fT(u.created_at)} · Terakhir aktif ${fT(u.last_seen)}${u.has_pin?" · Ada obrolan di-pin":""}<br>Limit: ${esc(lim)} · Hari ini: <b>${u.used_today}</b>${eff>=0?" / "+eff:""}${eff>0?`<div class="bar2"><i style="width:${pc}%"></i></div>`:""}</div>
+<div class="uact"><button class="pill" data-a="lim">Atur limit</button><button class="pill" data-a="rst">Reset pemakaian</button>${adm?"":`<button class="pill" data-a="${u.suspended?"unsusp":"susp"}">${u.suspended?"Aktifkan":"Suspend"}</button><button class="pill red" data-a="del">Hapus</button>`}</div></div>`}).join("")||'<p class="mute" style="margin-top:14px">Tidak ada pengguna yang cocok.</p>';
 }
-function admRows(d){
-  const R=[],u=d.usage&&d.usage.status===200&&d.usage.data&&d.usage.data.data,f=n=>n==null?"-":Number(n).toLocaleString("id-ID");
-  if(u){
-    if(u.unlimited_quota)R.push(["Sisa","Tak terbatas"]);else R.push(["Sisa",f(u.total_available)],["Terpakai",f(u.total_used)],["Total jatah",f(u.total_granted)]);
-    if(u.expires_at!=null)R.push(["Kedaluwarsa",u.expires_at>0?new Date(u.expires_at*1000).toLocaleDateString("id-ID"):"Tidak ada"]);
-    if(u.name)R.push(["Nama key",u.name]);
-  }else if(d.sub&&d.sub.status===200&&d.bill&&d.bill.status===200){
-    const lim=Number(d.sub.data.hard_limit_usd),used=Number(d.bill.data.total_usage)/100;
-    R.push(["Sisa","$"+(lim-used).toFixed(2)],["Terpakai","$"+used.toFixed(2)],["Batas","$"+lim.toFixed(2)]);
-  }
-  return R;
-}
-async function admChk(){
-  const l=$("#admTl");if(l)l.textContent="Memeriksa...";
-  const d=await admApi("/token/check",{key:cfg.key||CONFIG.API_KEY});
-  if(!$("#admTv"))return;
-  if(d.error){$("#admTl").textContent=d.error;return}
-  const R=admRows(d),m=d.models?d.models.status:0;
-  $("#admTv").textContent=R.length?R[0][1]:"-";
-  $("#admTl").innerHTML=(m===200?"Key valid":m===401||m===403?"Key ditolak server":"Status key tidak pasti")+(R.length?"":". Server tidak menyediakan data sisa token lewat endpoint yang dikenal")+R.slice(1).map(r=>`<br>${esc(r[0])}: ${esc(String(r[1]))}`).join("");
-  $("#admTr").textContent=JSON.stringify(d,null,2);
-}
-const WL={stopped:"Berhenti",starting:"Memulai",qr:"Menunggu scan QR",pair:"Menunggu kode dimasukkan",ready:"Terhubung"};
-function admWAr(s){
-  if(!$("#admLamp"))return;const k=s.state;
-  $("#admLamp").className="admlamp s-"+k;$("#admWt").textContent=WL[k]||k;
-  $("#admWm").textContent=s.me?"Nomor +"+s.me:"Bot belum terhubung ke nomor";
-  $("#admQr").hidden=!s.qr;if(s.qr)$("#admQr").src=s.qr;
-  $("#admCode").hidden=!s.code;if(s.code)$("#admCode").textContent=s.code;
-  document.querySelectorAll("[data-adm=wa]").forEach(b=>{const a=b.dataset.a;b.disabled=a==="start"?k!=="stopped":a==="logout"?false:k==="stopped"});
-  $("#admLog").replaceChildren(...(s.log.length?s.log:["Belum ada log."]).map(t=>{const d=document.createElement("div");d.textContent=t;if(/error|gagal|terputus/i.test(t))d.className="er";else if(/terhubung sebagai/i.test(t))d.className="ok";return d}));
-}
-async function admWA(){
-  const d=await admApi("/api/wa");
-  if(d._s===401){try{sessionStorage.removeItem("xz_admt")}catch(e){}return admRender()}
-  if(d.error){const m=$("#admMsg");if(m)m.textContent=d.error;return}
-  admWAr(d);
-}
-async function admRun(){
-  const i=$("#admXi"),o=$("#admXo");if(!i||!o)return;
-  const cmd=i.value.trim()||"--help";ADM.xh=[cmd,...ADM.xh.filter(c=>c!==cmd)].slice(0,20);ADM.xi=-1;
-  const box=document.createElement("div"),h=document.createElement("div"),pre=document.createElement("pre");
-  h.className="admCmd";h.textContent="$ "+cmd;pre.className="admlog";pre.textContent="Menjalankan...";box.append(h,pre);
-  if(o.querySelector("p"))o.replaceChildren();o.prepend(box);
-  const d=await admApi("/api/xctl",{cmd}),bad=!!d.error||d.code!==0;
-  pre.textContent=d.error||((d.stdout||"")+(d.stderr?"\n"+d.stderr:"")).trim()||"(tidak ada output)";
-  h.textContent+=bad?"  (gagal"+(d.code!=null?", kode "+d.code:"")+")":"  (selesai)";
-  i.value="";ADM.xo=o.innerHTML;
-}
-$("#pbody").addEventListener("click",async e=>{
-  if(e.target.closest("#admCode")){try{await navigator.clipboard.writeText($("#admCode").textContent.replace("-",""))}catch(x){}return}
-  const b=e.target.closest("[data-adm]");if(!b)return;const a=b.dataset.adm;
-  if(a==="login"){
-    let u=$("#admUrl").value.trim().replace(/\/$/,"");if(u&&!/^https?:\/\//.test(u))u="http://"+u;
-    try{u?localStorage.setItem("xz_admbase",u):localStorage.removeItem("xz_admbase");sessionStorage.setItem("xz_admt",$("#admPw").value)}catch(x){}
-    $("#admErr").textContent="Memeriksa...";
-    const d=await admApi("/api/config");
-    if(d._s!==200){try{sessionStorage.removeItem("xz_admt")}catch(x){}$("#admErr").textContent=d.error||"Gagal masuk";return}
-    admRender();
-  }else if(a==="exit"){try{sessionStorage.removeItem("xz_admt")}catch(x){}clearInterval(window.ADMT);admRender()}
-  else if(a==="sub"){ADM.sub=b.dataset.s;admRender()}
-  else if(a==="chk")admChk();
-  else if(a==="x")admRun();
-  else if(a==="wa"){
-    const act=b.dataset.a,pair=$("#admMode").value==="pair",ph=$("#admPh").value.replace(/\D/g,""),m=$("#admMsg");
-    if(act==="logout"&&!confirm("Logout dan hapus sesi WhatsApp? Kamu perlu login lagi."))return;
-    if((act==="start"||act==="restart")&&pair&&ph.length<8){m.textContent="Isi nomor WA dengan kode negara.";return}
-    m.textContent="";b.disabled=true;
-    const d=await admApi("/api/wa/"+act,{phone:pair?ph:""});b.disabled=false;
-    if(d.error)m.textContent=d.error;else admWAr(d);
-  }
+async function admDo(b,fn,a,ok){b.disabled=true;const r=await AR(fn,a);b.disabled=false;if(r.code==="session"||r.code==="suspended"){admClose();return out(OUTM[r.code])}if(r.error)return toast(r.error);toast(ok);await admLoad()}
+$("#adm").addEventListener("click",async e=>{
+  if(e.target.closest("#admX"))return admClose();
+  if(e.target.closest("#admR")){ADM.d=null;return admLoad()}
+  const fb=e.target.closest("[data-f]");if(fb){ADM.f=fb.dataset.f;return admDraw()}
+  const b=e.target.closest("[data-a]");if(!b)return;
+  const a=b.dataset.a,card=b.closest(".ucard"),u=card&&ADM.d.users.find(x=>x.id===card.dataset.id);
+  if(a==="def"){const n=parseInt($("#admDef").value,10);if(isNaN(n)||n<-1)return toast("Isi angka 0 atau lebih, atau -1 untuk tanpa batas.");return admDo(b,"xz_admin_default",{p_limit:n},"Limit default disimpan.")}
+  if(!u)return;
+  if(a==="lim")return limOpen(u);
+  if(a==="rst")return admDo(b,"xz_admin_reset_usage",{p_user:u.id},"Pemakaian "+u.username+" direset.");
+  if(a==="susp"){if(!confirm("Suspend "+u.username+"? Pengguna harus verifikasi nomor telepon (OTP) agar bisa masuk lagi."))return;return admDo(b,"xz_admin_suspend",{p_user:u.id,p_on:true},u.username+" disuspend.")}
+  if(a==="unsusp")return admDo(b,"xz_admin_suspend",{p_user:u.id,p_on:false},u.username+" diaktifkan.");
+  if(a==="del"){if(!confirm("Hapus akun "+u.username+" beserta obrolan yang di-pin dan datanya? Tidak bisa dibatalkan."))return;return admDo(b,"xz_admin_delete",{p_user:u.id},"Akun "+u.username+" dihapus.")}
 });
-$("#pbody").addEventListener("change",e=>{if(e.target.id==="admMode")$("#admPh").hidden=e.target.value!=="pair"});
-$("#pbody").addEventListener("keydown",e=>{
-  if(e.target.id==="admPw"&&e.key==="Enter")document.querySelector("[data-adm=login]").click();
-  if(e.target.id==="admXi"){
-    if(e.key==="Enter"){e.preventDefault();admRun()}
-    else if(e.key==="ArrowUp"&&ADM.xh.length){e.preventDefault();ADM.xi=Math.min(ADM.xi+1,ADM.xh.length-1);e.target.value=ADM.xh[ADM.xi]}
-    else if(e.key==="ArrowDown"){e.preventDefault();ADM.xi=Math.max(ADM.xi-1,-1);e.target.value=ADM.xi<0?"":ADM.xh[ADM.xi]}
-  }
+$("#adm").addEventListener("input",e=>{if(e.target.id==="admQ"){ADM.q=e.target.value;admList()}});
+/* dialog atur limit */
+let LD=null;
+function limOpen(u){LD={id:u.id,name:u.username,mode:u.daily_limit==null?"def":u.daily_limit<0?"inf":"num",val:u.daily_limit>=0?u.daily_limit:(ADM.d.default_limit>=0?ADM.d.default_limit:50),def:ADM.d.default_limit};limDraw();$("#ld").classList.add("on")}
+function limDraw(){const L=LD;$("#ld .dlg").innerHTML=`<div class="dh"><h2>Limit pemakaian</h2><button class="ib" data-l="x" aria-label="Tutup">${ic("x")}</button></div><p class="mute" style="margin:8px 0 14px">${esc(L.name)} · pesan per hari, reset pukul 00.00 WIB</p><div class="admseg">${[["def","Default ("+fL(L.def)+")"],["inf","Tanpa batas"],["num","Angka"]].map(t=>`<button data-l="${t[0]}" class="${L.mode===t[0]?"on":""}">${t[1]}</button>`).join("")}</div>${L.mode==="num"?`<input type="number" id="ldv" min="0" step="1" value="${esc(String(L.val))}" aria-label="Jumlah pesan per hari">`:""}<button class="ab" style="width:100%;margin-top:16px" data-l="save">Simpan limit</button>`}
+$("#ld").addEventListener("click",async e=>{
+  if(e.target.id==="ld")return $("#ld").classList.remove("on");
+  const b=e.target.closest("[data-l]");if(!b||!LD)return;const k=b.dataset.l;
+  if(k==="x")return $("#ld").classList.remove("on");
+  if(k==="def"||k==="inf"||k==="num"){const v=$("#ldv");if(v)LD.val=v.value;LD.mode=k;return limDraw()}
+  if(k==="save"){
+    let n=null;if(LD.mode==="inf")n=-1;else if(LD.mode==="num"){n=parseInt(($("#ldv")||{}).value,10);if(isNaN(n)||n<0)return toast("Isi angka 0 atau lebih.")}
+    b.disabled=true;const r=await AR("xz_admin_limit",{p_user:LD.id,p_limit:n});b.disabled=false;
+    if(r.error)return toast(r.error);$("#ld").classList.remove("on");toast("Limit "+LD.name+" disimpan.");admLoad()}
 });
 /* ================= AUTH ================= */
 const WA_DEV="https://wa.me/6289523042979",SESS_MS=48*36e5;
 const EYE='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
 const tk=()=>{try{return JSON.parse(localStorage.getItem("xz_ses")).t}catch(e){return""}};
-async function API(path,body,m){
-  try{const r=await fetch(CONFIG.AUTH_BASE+path,{method:m||(body?"POST":"GET"),headers:{"Content-Type":"application/json",Authorization:"Bearer "+tk()},body:body?JSON.stringify(body):undefined});
-    let j={};try{j=await r.json()}catch(e){}return{s:r.status,...(Array.isArray(j)?{list:j}:j)}}
-  catch(e){return{s:0,error:"Tidak bisa terhubung ke server."}}}
+/* ---- Supabase: semua lewat RPC (fungsi public.xz_* di supabase_setup.sql) ---- */
+const SB={url:String(CONFIG.SUPABASE_URL||"").replace(/\/+$/,""),key:String(CONFIG.SUPABASE_ANON_KEY||"")};
+async function RPC(fn,args){
+  if(!/^https?:\/\//.test(SB.url)||!SB.key||/ISI_/.test(SB.url+SB.key))return{s:0,error:"Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di CONFIG."};
+  try{
+    const h={"Content-Type":"application/json",apikey:SB.key};if(/^eyJ/.test(SB.key))h.Authorization="Bearer "+SB.key;
+    const r=await fetch(SB.url+"/rest/v1/rpc/"+fn,{method:"POST",headers:h,body:JSON.stringify(args||{})});
+    let j=null;try{j=await r.json()}catch(e){}
+    if(!r.ok){const miss=r.status===404||(j&&(j.code==="PGRST202"||j.code==="42883"));
+      return{s:r.status,error:miss?"Database belum disiapkan. Jalankan supabase_setup.sql di SQL Editor Supabase.":(j&&j.message)||"Permintaan gagal (kode "+r.status+")."}}
+    return j&&typeof j==="object"&&!Array.isArray(j)?{s:200,...j}:{s:200,data:j};
+  }catch(e){return{s:0,error:"Tidak bisa terhubung ke server."}}
+}
 const setSes=r=>{try{localStorage.setItem("xz_ses",JSON.stringify({t:r.token,u:r.user,adm:!!r.admin,at:Date.now()}))}catch(e){}};
 const SM=()=>{try{const m=sessionStorage.xz_msg;sessionStorage.removeItem("xz_msg");return m||""}catch(e){return""}};
 const enter=r=>{setSes(r);if(!tk()){const bb=$("#go");if(bb)bb.disabled=false;return am("Penyimpanan browser diblokir. Izinkan cookie/penyimpanan situs untuk Xozen, lalu coba lagi.")}location.reload()};
 function out(msg){try{localStorage.removeItem("xz_ses");if(msg)sessionStorage.xz_msg=msg}catch(e){}location.reload()}
-async function ping(){const r=await API("/api/auth/me");if(r.token)setSes(r);else if(r.s===401||r.s===403)out(r.suspended?"Akun ditangguhkan admin. Masuk lagi untuk verifikasi.":"Sesi berakhir, silakan masuk lagi.")}
-async function loadUsers(){const r=await API("/admin/users"),el=$("#ulist");if(!el)return;if(!r.list)return el.textContent=r.error||"Gagal memuat.";
-  el.innerHTML=r.list.map(u=>`<div class="row2"><span style="min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(u.username)}<br><span class="mute">${esc(u.wa)}${u.suspended?" · disuspend":""}</span></span><span style="display:flex;gap:6px"><button class="pill" data-u="${esc(u.username)}" data-act="${u.suspended?"unsuspend":"suspend"}">${u.suspended?"Aktifkan":"Suspend"}</button><button class="pill red" data-u="${esc(u.username)}" data-act="del">Hapus</button></span></div>`).join("")||"Belum ada pengguna."}
+async function logout(){try{await RPC("xz_logout",{p_token:tk()})}catch(e){}out()}
+const OUTM={session:"Sesi berakhir, silakan masuk lagi.",suspended:"Akun ditangguhkan admin. Masuk lagi untuk verifikasi."};
+async function ping(){
+  const r=await RPC("xz_me",{p_token:tk()});
+  if(r.user){setSes({token:tk(),user:r.user,admin:r.admin});QUOTA={limit:r.limit,used:r.used};renderComp();syncPin()}
+  else if(r.code==="session"||r.code==="suspended")out(OUTM[r.code]);
+}
+function quotaH(){const q=QUOTA,inf=q.limit<0,pc=inf?0:Math.min(100,q.used/Math.max(1,q.limit)*100);
+  return `<div class="qbox"><div class="mute">Pemakaian hari ini</div><div class="qn">${q.used}${inf?"":" / "+q.limit} <span class="mute">pesan${inf?" · tanpa batas":""}</span></div>${inf?"":`<div class="bar2"><i style="width:${pc}%"></i></div>`}</div>`}
+
+/* ================= PIN: 1 obrolan per akun, disimpan di Supabase, sinkron antar perangkat ================= */
+const canon=v=>Array.isArray(v)?"["+v.map(canon).join(",")+"]":v&&typeof v==="object"?"{"+Object.keys(v).filter(k=>k[0]!=="_"&&v[k]!==undefined).sort().map(k=>JSON.stringify(k)+":"+canon(v[k])).join(",")+"}":JSON.stringify(v);
+const pinSigOf=c=>{const o=Object.assign({},c);delete o.pin;delete o.pd;return canon(o)};
+function pinTouch(){const p=chats.find(x=>x.pin);if(!p)return;if(pinSigOf(p)!==pinSig){p.pd=1;pinPush()}}
+function pinPush(now,force){
+  clearTimeout(pinT);
+  const go=async()=>{
+    const c=chats.find(x=>x.pin);if(!c)return;const sg=pinSigOf(c);
+    const r=await RPC("xz_pin_set",{p_token:tk(),p_chat:JSON.parse(sg),p_force:!!force});
+    if(r.ok){pinErr=false;pinSig=sg;const c2=chats.find(x=>x.id===c.id&&x.pin);if(c2){if(pinSigOf(c2)===sg){c2.pd=0;store.set("xz_chats",chats)}else pinPush()}renderSide()}
+    else if(r.code==="conflict"||r.code==="stale")adoptPin(r.chat);
+    else if(r.code!=="session"&&r.code!=="suspended"){pinErr=true;renderSide()}
+    return r;
+  };
+  if(now)return go();pinT=setTimeout(go,1500);
+}
+function adoptPin(rc){
+  if(!rc||!rc.id)return;
+  if(busy){setTimeout(()=>adoptPin(rc),1500);return}
+  chats.forEach(x=>{if(x.pin&&x.id!==rc.id){x.pin=false;x.pd=0}});
+  const n=Object.assign({},rc,{pin:true,pd:0}),i=chats.findIndex(x=>x.id===rc.id);
+  if(i>-1)chats[i]=n;else chats.push(n);
+  pinSig=pinSigOf(n);pinErr=false;store.set("xz_chats",chats);
+  if(cur===n.id)renderMain(false);renderSide();
+}
+async function syncPin(){
+  if(busy||pinBusy)return;pinBusy=true;
+  try{
+    const r=await RPC("xz_pin_get",{p_token:tk()});
+    if(r.error){if(!r.code)pinErr=true;return}
+    pinErr=false;
+    const rc=r.chat,lp=chats.find(x=>x.pin);
+    if(lp&&lp.pd){await pinPush(true);return}
+    if(!rc){if(lp){lp.pin=false;store.set("xz_chats",chats)}pinSig=null}
+    else if(!lp||lp.id!==rc.id||pinSigOf(rc)!==pinSigOf(lp))adoptPin(rc);
+    else pinSig=pinSigOf(lp);
+  }finally{pinBusy=false;renderSide()}
+}
+async function pinToggle(id){
+  const c=chats.find(x=>x.id===id);if(!c)return;
+  if(c.pin){
+    const r=await RPC("xz_pin_clear",{p_token:tk(),p_chat_id:id});
+    if(r.error)return toast("Gagal melepas pin: "+r.error);
+    c.pin=false;c.pd=0;pinSig=null;clearTimeout(pinT);store.set("xz_chats",chats);renderSide();
+    return toast("Pin dilepas. Obrolan ini kini hanya ada di perangkat ini.");
+  }
+  if(!c.msgs.length)return toast("Obrolan kosong tidak bisa di-pin.");
+  const sg=pinSigOf(c);
+  let r=await RPC("xz_pin_set",{p_token:tk(),p_chat:JSON.parse(sg),p_force:false});
+  if(r.code==="conflict"){
+    const old=r.chat||{};
+    if(!confirm('Maksimal 1 obrolan yang di-pin. Ganti "'+(old.title||"obrolan lain")+'" dengan obrolan ini?\n\nObrolan lama tetap ada di perangkat ini, tetapi tidak lagi tersimpan di akun.'))return;
+    r=await RPC("xz_pin_set",{p_token:tk(),p_chat:JSON.parse(sg),p_force:true});
+    if(r.ok&&old.id&&!chats.some(x=>x.id===old.id))chats.push(Object.assign({},old,{pin:false,pd:0}));
+  }
+  if(r.code==="stale"){adoptPin(r.chat);return toast("Obrolan ini sudah di-pin dari perangkat lain.")}
+  if(!r.ok)return toast(r.error||"Gagal menyimpan pin.");
+  chats.forEach(x=>{if(x!==c){x.pin=false;x.pd=0}});c.pin=true;c.pd=0;pinSig=sg;pinErr=false;clearTimeout(pinT);
+  store.set("xz_chats",chats);renderSide();toast("Di-pin. Tersimpan di akunmu dan muncul di semua perangkat.");
+}
 
 const LEGAL={terms:["Ketentuan Penggunaan",[
 "<b>1. Persetujuan.</b> Dengan mendaftar atau masuk ke Xozen, Anda menyetujui ketentuan ini. Jika tidak setuju, mohon jangan menggunakan layanan.",
 "<b>2. Akun.</b> Anda wajib memberi username dan nomor WhatsApp yang benar. Satu nomor WhatsApp hanya untuk satu akun. Jaga kerahasiaan kata sandi; semua aktivitas di akun Anda menjadi tanggung jawab Anda.",
 "<b>3. Penggunaan yang dilarang.</b> Dilarang memakai Xozen untuk melanggar hukum, membuat atau menyebarkan malware, menipu, melecehkan, melanggar hak pihak lain, atau mencoba menembus keamanan dan membebani layanan.",
 "<b>4. Jawaban AI.</b> Jawaban dihasilkan AI, bisa keliru atau tidak lengkap, dan hanya untuk referensi. Bukan nasihat medis, hukum, atau keuangan. Periksa kembali sebelum dipakai.",
-"<b>5. Penangguhan.</b> Admin dapat menangguhkan atau menghapus akun yang melanggar ketentuan atau membahayakan layanan. Akun yang ditangguhkan harus verifikasi kode yang dikirim ke WhatsApp saat masuk berikutnya.",
+"<b>5. Penangguhan.</b> Admin dapat menangguhkan atau menghapus akun yang melanggar ketentuan atau membahayakan layanan. Akun yang ditangguhkan harus verifikasi nomor telepon dengan kode OTP saat masuk berikutnya. Selama masa beta, OTP masih berupa kode demo.",
 "<b>6. Sesi.</b> Sesi berakhir otomatis bila Anda tidak membuka Xozen selama 2 hari, lalu Anda perlu masuk lagi.",
 "<b>7. Tanpa jaminan.</b> Layanan disediakan apa adanya. Kami dapat mengubah atau menghentikan layanan sewaktu-waktu dan tidak bertanggung jawab atas kerugian yang timbul dari penggunaannya, sejauh diizinkan hukum.",
 "<b>8. Perubahan.</b> Ketentuan dapat diperbarui. Dengan tetap memakai layanan, Anda menyetujui versi terbaru. Pertanyaan? Hubungi Developer lewat WhatsApp."]],
 privacy:["Kebijakan Privasi",[
-"<b>1. Data akun di server.</b> Kami menyimpan username, nomor WhatsApp, kata sandi dalam bentuk hash (bukan teks asli), waktu pendaftaran, dan status akun (aktif atau ditangguhkan).",
-"<b>2. Nomor WhatsApp.</b> Hanya dipakai untuk mengirim kode verifikasi (reset kata sandi dan verifikasi akun yang ditangguhkan). Tidak untuk iklan dan tidak dijual.",
-"<b>3. Obrolan.</b> Riwayat obrolan disimpan di peramban perangkat Anda, bukan di server akun. Pesan dan file yang Anda kirim diteruskan ke server AI untuk membuat jawaban, jadi jangan mengirim data rahasia atau sensitif.",
+"<b>1. Data akun di server.</b> Kami menyimpan username, nomor WhatsApp, kata sandi dalam bentuk hash (bukan teks asli), waktu pendaftaran, status akun (aktif, ditangguhkan, terverifikasi), batas dan jumlah pemakaian harian.",
+"<b>2. Nomor WhatsApp.</b> Hanya dipakai untuk verifikasi nomor telepon (reset kata sandi dan verifikasi akun yang ditangguhkan). Selama beta, kode verifikasi masih demo dan belum dikirim ke WhatsApp. Tidak untuk iklan dan tidak dijual.",
+"<b>3. Obrolan.</b> Riwayat obrolan disimpan di peramban perangkat Anda. Pengecualian: satu obrolan yang Anda pin disimpan di server akun agar bisa dibuka di semua perangkat, dan terhapus saat pin dilepas atau akun dihapus. Pesan dan file yang Anda kirim diteruskan ke server AI untuk membuat jawaban, jadi jangan mengirim data rahasia atau sensitif.",
 "<b>4. Penyimpanan lokal.</b> Kami memakai penyimpanan peramban untuk sesi masuk, tema, dan pengaturan. Tidak ada pelacak iklan.",
-"<b>5. Pihak ketiga.</b> Penyedia pengiriman WhatsApp menerima nomor tujuan dan isi kode verifikasi. Penyedia AI memproses pesan yang Anda kirim ke Xozen.",
+"<b>5. Pihak ketiga.</b> Data akun dan obrolan yang di-pin disimpan di penyedia basis data kami (Supabase). Penyedia AI memproses pesan yang Anda kirim ke Xozen.",
 "<b>6. Keamanan dan penyimpanan.</b> Kata sandi di-hash dan akses admin dibatasi. Data akun disimpan selama akun ada dan dihapus saat akun dihapus. Tidak ada sistem yang sepenuhnya kebal dari risiko.",
 "<b>7. Hak Anda.</b> Anda dapat meminta perubahan atau penghapusan data akun lewat Developer di WhatsApp.",
 "<b>8. Perubahan.</b> Kebijakan ini dapat diperbarui dan berlaku sejak dipublikasikan di aplikasi."]]};
@@ -689,30 +757,24 @@ $("#legal").onclick=e=>{if(e.target.id==="legal"||e.target.closest("[data-x]"))$
 
 let cred=null,fs=1,fg={};
 const g=id=>($("#"+id)||{}).value||"",am=(t,ok)=>{const e=$("#am");if(e){e.textContent=t||"";e.style.color=ok?"var(--acc)":""}};
-const FI=(id,ph,o={})=>`<div class="af"><input id="${id}" placeholder="${ph}" type="${o.pw?"password":"text"}" autocomplete="off"${o.n?' inputmode="numeric"':""}${o.code?' class="hc"':o.pw?' class="pw"':""}>${o.pw?`<button type="button" class="eye" data-eye="${id}" aria-label="Tampilkan kata sandi">${EYE}</button>`:""}${o.code?'<button type="button" class="sc" id="sc">Kirim kode</button>':""}</div>`;
+const FI=(id,ph,o={})=>`<div class="af"><input id="${id}" placeholder="${ph}" type="${o.pw?"password":"text"}" autocomplete="off"${o.n?' inputmode="numeric"':""}${o.pw?' class="pw"':""}>${o.pw?`<button type="button" class="eye" data-eye="${id}" aria-label="Tampilkan kata sandi">${EYE}</button>`:""}</div>`;
 const TOS=t=>`<p class="am">${t}, Anda menyetujui <a data-l="terms">Ketentuan Penggunaan</a> dan <a data-l="privacy">Kebijakan Privasi</a>.</p>`;
+const DEMO='<p class="demo"><b>Mode beta:</b> OTP masih demo dan belum dikirim ke WhatsApp. Gunakan kode <b>123-abc</b>.</p>';
 function showAuth(v,msg){
   const L={
     in:FI("a1","Username / nomor WhatsApp")+FI("a2","Kata sandi",{pw:1})+TOS("Dengan mendaftar atau masuk")+`<div class="ar"><a data-v="fg">Lupa kata sandi?</a><a data-v="up">Daftar</a></div><button class="ab" id="go">Masuk</button><div class="ao"><a href="${WA_DEV}" target="_blank" rel="noopener">Developer</a></div>`,
     up:'<p class="am">Pendaftaran tidak memerlukan kode verifikasi. Satu nomor WhatsApp untuk satu akun.</p>'+FI("a1","Username")+FI("a3","Nomor WhatsApp (08xx)",{n:1})+FI("a2","Kata sandi",{pw:1})+FI("a4","Konfirmasi kata sandi",{pw:1})+TOS("Dengan mendaftar")+'<button class="ab" id="go">Daftar</button><div class="ar c"><a data-v="in">Masuk</a></div>',
-    fg:fs===1?'<div class="at">Reset kata sandi</div><p class="am">Masukkan username atau nomor WhatsApp, kami akan mengirim kode verifikasi ke WhatsApp untuk mengatur ulang kata sandi.</p>'+FI("a1","Username / nomor WhatsApp")+FI("a5","Kode",{code:1,n:1})+'<button class="ab" id="go">Lanjutkan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'
+    fg:fs===1?'<div class="at">Reset kata sandi</div><p class="am">Masukkan username atau nomor WhatsApp, lalu kode verifikasi (OTP) untuk mengatur ulang kata sandi.</p>'+DEMO+FI("a1","Username / nomor WhatsApp")+FI("a5","Kode OTP")+'<button class="ab" id="go">Lanjutkan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'
       :'<div class="at">Kata sandi baru</div>'+FI("a2","Kata sandi baru",{pw:1})+FI("a4","Konfirmasi kata sandi",{pw:1})+'<button class="ab" id="go">Simpan</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>',
-    sus:'<div class="at">Verifikasi akun</div><p class="am">Akun Anda ditangguhkan admin. Masukkan kode yang dikirim ke WhatsApp untuk mengaktifkannya kembali.</p>'+FI("a5","Kode",{code:1,n:1})+'<button class="ab" id="go">Verifikasi</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'};
+    sus:'<div class="at">Verifikasi nomor telepon</div><p class="am">Akun Anda ditangguhkan admin. Masukkan kode OTP untuk memverifikasi nomor telepon dan mengaktifkan akun kembali.</p>'+DEMO+FI("a5","Kode OTP")+'<button class="ab" id="go">Verifikasi</button><div class="ar c"><a data-v="in">Kembali ke masuk</a></div>'};
   $("#auth").innerHTML=`<div class="aw"><div class="ac"><div class="ab0">${logo()}<span>Xozen</span></div>${L[v]}<p class="ae" id="am">${esc(msg||SM())}</p></div></div>`;
   $("#auth").dataset.view=v;$("#auth").classList.add("on");
-}
-function cool(b,n=60){b.disabled=true;b.textContent=n+"s";const t=setInterval(()=>{if(!b.isConnected)return clearInterval(t);if(--n<=0){clearInterval(t);b.disabled=false;b.textContent="Kirim kode"}else b.textContent=n+"s"},1e3)}
-async function sendCode(b){
-  if($("#auth").dataset.view==="sus"){b.disabled=true;const r=await API("/api/auth/login",{id:cred.id,password:cred.pw});am(r.error||"Gagal mengirim kode.",r.suspended);return cool(b)}
-  const id=g("a1").trim();if(!id)return am("Masukkan username atau nomor WhatsApp.");
-  b.disabled=true;const r=await API("/api/auth/code",{purpose:"reset",id});
-  if(r.s===200){am("Jika akun ditemukan, kode dikirim ke WhatsApp.",1);cool(b)}else{b.disabled=false;am(r.error||"Gagal mengirim kode.")}
 }
 async function submit(b){
   const v=$("#auth").dataset.view,id=g("a1").trim(),pw=g("a2"),c=g("a5").trim(),bad=t=>{b.disabled=false;am(t)};am("");b.disabled=true;
   if(v==="in"){
     if(!id||!pw)return bad("Isi username/nomor dan kata sandi.");
-    const r=await API("/api/auth/login",{id,password:pw});
+    const r=await RPC("xz_login",{p_id:id,p_password:pw});
     if(r.token)return enter(r);
     if(r.suspended){cred={id,pw};showAuth("sus");return am(r.error,1)}
     return bad(r.error||"Gagal masuk.")}
@@ -721,22 +783,22 @@ async function submit(b){
     if(!id||!wa||!pw)return bad("Lengkapi semua kolom.");
     if(pw.length<6)return bad("Kata sandi minimal 6 karakter.");
     if(pw!==g("a4"))return bad("Konfirmasi kata sandi tidak sama.");
-    const r=await API("/api/auth/register",{username:id,wa,password:pw});
+    const r=await RPC("xz_register",{p_username:id,p_wa:wa,p_password:pw});
     return r.token?enter(r):bad(r.error||"Gagal mendaftar.")}
-  if(v==="sus"){const r=await API("/api/auth/verify",{id:cred.id,code:c});return r.token?enter(r):bad(r.error||"Kode salah atau kedaluwarsa.")}
-  if(fs===1){if(!id||!c)return bad("Isi username/nomor dan kode.");fg={id,c};fs=2;return showAuth("fg")}
+  if(v==="sus"){if(!c)return bad("Masukkan kode OTP.");const r=await RPC("xz_verify_otp",{p_id:cred.id,p_password:cred.pw,p_code:c});return r.token?enter(r):bad(r.error||"Kode salah atau kedaluwarsa.")}
+  if(fs===1){if(!id||!c)return bad("Isi username/nomor dan kode OTP.");fg={id,c};fs=2;return showAuth("fg")}
   if(pw.length<6)return bad("Kata sandi minimal 6 karakter.");
   if(pw!==g("a4"))return bad("Konfirmasi kata sandi tidak sama.");
-  const r=await API("/api/auth/reset",{id:fg.id,code:fg.c,password:pw});
-  if(r.s!==200){fs=1;showAuth("fg");return am(r.error||"Gagal mengatur ulang.")}
+  const r=await RPC("xz_reset_password",{p_id:fg.id,p_code:fg.c,p_password:pw});
+  if(!r.ok){fs=1;showAuth("fg");return am(r.error||"Gagal mengatur ulang.")}
   fs=1;showAuth("in");am("Kata sandi diubah. Silakan masuk.",1);
 }
 $("#auth").addEventListener("click",e=>{
-  const t=e.target,v=t.closest("[data-v]"),l=t.closest("[data-l]"),ey=t.closest("[data-eye]"),sc=t.closest("#sc"),go=t.closest("#go");
+  const t=e.target,v=t.closest("[data-v]"),l=t.closest("[data-l]"),ey=t.closest("[data-eye]"),go=t.closest("#go");
   if(v){fs=1;return showAuth(v.dataset.v)}
   if(l)return legal(l.dataset.l);
   if(ey){const i=$("#"+ey.dataset.eye);return i.type=i.type==="password"?"text":"password"}
-  if(sc)return sendCode(sc);if(go)return submit(go);
+  if(go)return submit(go);
 });
 $("#auth").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){const b=$("#go");if(b&&!b.disabled)b.click()}});
 try{
