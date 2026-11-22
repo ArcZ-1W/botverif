@@ -227,10 +227,8 @@ header{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;ga
 <script>
 /* ================= KONFIGURASI ================= */
 const CONFIG = {
-  BASE_URL: "https://bandelbanget.xyz/v1",
-  SUPABASE_URL: "https://dbbfoisrphocoyddgyhu.supabase.co",            // contoh: https://abcdxyz.supabase.co
+    SUPABASE_URL: "https://dbbfoisrphocoyddgyhu.supabase.co",            // contoh: https://abcdxyz.supabase.co
   SUPABASE_ANON_KEY: "sb_publishable_PmYc-4IAfiNVPhvrH0fnvw_OBuK28Gd",  // Project Settings > API Keys > anon / publishable key
-  API_KEY: "sk-qwen-9c4c041fd3839283944cb94cefd88e2f9c44d87b32186054",
   MODELS: [
     {id:"xozen-pro",      name:"Xozen Pro",      real:"deepseek-v4.1-flash"},
     {id:"xozen-1017",     name:"Xozen 1017",     real:"deepseek-v4.1-flash-mod"},
@@ -417,8 +415,8 @@ async function ask(c){
     messages:[{role:"system",content:CONFIG.IDENTITY+(think?THINKP:"")+(cfg.sys?"\n"+cfg.sys:"")},...c.msgs.filter(m=>!m.err).map(m=>({role:m.role,content:apiText(m)}))]};
   ctrl=new AbortController();let full="",rs="";
   try{
-    const r=await fetch(CONFIG.BASE_URL+"/chat/completions",{method:"POST",signal:ctrl.signal,
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+(cfg.key||CONFIG.API_KEY)},body:JSON.stringify(body)});
+    const r=await fetch(gq.base+"/chat/completions",{method:"POST",signal:ctrl.signal,
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+(cfg.key||gq.key)},body:JSON.stringify(body)});
     if(!r.ok)throw{status:r.status};
     const rd=r.body.getReader(),dec=new TextDecoder();let buf="";
     while(true){
@@ -592,12 +590,13 @@ async function admLoad(){
   if(r.code==="session"||r.code==="suspended"){admClose();return out(OUTM[r.code])}
   if(r.code==="forbidden"){admClose();return toast("Akun ini bukan admin.")}
   if(r.error){c.innerHTML=`<div class="err">${esc(r.error)}</div>`;return}
-  ADM.d=r;admDraw();
+  ADM.api=await AR("xz_admin_api_get");ADM.d=r;admDraw();
 }
 function admDraw(){
   const d=ADM.d,s=d.stats;
   $("#admC").innerHTML=`<div class="stg"><div class="stc"><b>${s.total}</b><span>Pengguna</span></div><div class="stc"><b>${s.suspended}</b><span>Disuspend</span></div><div class="stc"><b>${s.unverified}</b><span>Belum verifikasi</span></div><div class="stc"><b>${s.messages_today}</b><span>Pesan hari ini</span></div></div>
 <div class="qbox"><div class="mute">Limit default per pengguna (pesan per hari)</div><div class="admin2"><input type="number" id="admDef" min="-1" step="1" value="${d.default_limit}" aria-label="Limit default"><button class="pill" data-a="def">Simpan</button></div><p class="mute" style="margin-top:8px;font-size:13px">Isi -1 untuk tanpa batas. Hitungan reset tiap hari pukul 00.00 WIB.</p></div>
+<div class="qbox"><div class="mute">Endpoint API bot &amp; key</div><input type="url" id="admApiBase" placeholder="https://domain-bot:3000/v1" value="${esc((ADM.api&&ADM.api.base)||"")}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Endpoint API"><div class="admin2"><input type="password" id="admApiKey" placeholder="${ADM.api&&ADM.api.has_key?"Key tersimpan ("+esc(ADM.api.hint)+") — kosongkan jika tidak diubah":"Key API"}" autocomplete="off" aria-label="Key API"><button class="pill" data-a="api">Simpan</button></div><p class="mute" style="margin-top:8px;font-size:13px">Dipakai semua pengguna untuk chat. Akun admin tanpa batas pemakaian.</p></div>
 <div class="admseg" style="margin-top:18px">${[["all","Semua"],["act","Aktif"],["sus","Suspend"],["unv","Belum verifikasi"]].map(t=>`<button data-f="${t[0]}" class="${ADM.f===t[0]?"on":""}">${t[1]}</button>`).join("")}</div>
 <input type="text" id="admQ" placeholder="Cari username atau nomor…" value="${esc(ADM.q)}" autocomplete="off" autocapitalize="off" spellcheck="false"><div id="admL"></div>`;
   admList();
@@ -619,6 +618,7 @@ $("#adm").addEventListener("click",async e=>{
   const fb=e.target.closest("[data-f]");if(fb){ADM.f=fb.dataset.f;return admDraw()}
   const b=e.target.closest("[data-a]");if(!b)return;
   const a=b.dataset.a,card=b.closest(".ucard"),u=card&&ADM.d.users.find(x=>x.id===card.dataset.id);
+  if(a==="api"){const bs=$("#admApiBase").value.trim(),ky=$("#admApiKey").value.trim();if(!/^https?:\/\//i.test(bs))return toast("Endpoint harus diawali http:// atau https://");return admDo(b,"xz_admin_api_set",{p_base:bs,p_key:ky||null},"Endpoint API disimpan.")}
   if(a==="def"){const n=parseInt($("#admDef").value,10);if(isNaN(n)||n<-1)return toast("Isi angka 0 atau lebih, atau -1 untuk tanpa batas.");return admDo(b,"xz_admin_default",{p_limit:n},"Limit default disimpan.")}
   if(!u)return;
   if(a==="lim")return limOpen(u);
