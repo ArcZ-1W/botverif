@@ -13,7 +13,7 @@ window.XOZEN = {
     { name: "Xozen Flash",         real: "mimo-v2.5-pro",                  times: 1, premium: false, desc: "Cepat dan hemat. Cocok untuk tanya jawab harian." },
     { name: "Xozen Magnesium 2.1", real: "deepseek-v4.1-flash-1017-mod", times: 2, premium: false, desc: "Lebih teliti untuk tulisan, ringkasan, dan kode ringan." },
     { name: "Xozen Titanium",      real: "glm-5.3-flash-mod",            times: 2.5, premium: true,  desc: "Model premium untuk tugas panjang dan rumit." },
-    { name: "Xozen Lithium 3.0",      real: "gemini-4-argon",            times: 2.5, premium: true,  desc: "Model premium untuk tugas panjang dan rumit." }    
+    { name: "Xozen Lithium 3.0",      real: "gemini-4-argon",            times: 15, premium: true,  desc: "Model premium untuk tugas panjang dan rumit." }    
   ],
 
   // Saldo xoz (hanya untuk tampilan landing, hitungan asli di server)
