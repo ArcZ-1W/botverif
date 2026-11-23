@@ -1,0 +1,20 @@
+{
+  "name": "wa-otp-bot",
+  "version": "1.0.0",
+  "description": "Bot WhatsApp pengirim OTP untuk Xozen (Baileys + Express)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "reset": "node index.js --reset"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.19",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pino": "^9.3.2"
+  },
+  "type": "module"
+}
